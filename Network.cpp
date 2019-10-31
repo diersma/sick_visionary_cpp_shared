@@ -16,18 +16,23 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "Network.h"
 
-Network::Network(unsigned short port) :
-    m_ipAddress(DEFAULT_IP)
+Network::Network(unsigned short port)
+    : m_ipAddress(DEFAULT_IP)
     , m_port(port)
+    , m_isUDP(false)
+    , m_recvSocket(-1)
 {
   memset(&m_udpAddr, 0, sizeof(m_udpAddr));
 }
 
-Network::Network(unsigned long ipAddress, unsigned short port):
-    m_ipAddress(ipAddress)
+Network::Network(unsigned long ipAddress, unsigned short port)
+    : m_ipAddress(ipAddress)
     , m_port(port)
+    , m_isUDP(false)
+    , m_recvSocket(-1)
 {
   memset(&m_udpAddr, 0, sizeof(m_udpAddr));
 }
@@ -177,8 +182,8 @@ int Network::write(const std::vector<char> &buffer)
 {
   if (m_isUDP)
   {
-    sendto(m_recvSocket, buffer.data(), (int)buffer.size(), 0,
-      (struct sockaddr*) &m_udpAddr, sizeof(m_udpAddr));
+    return sendto(m_recvSocket, buffer.data(), (int)buffer.size(), 0,
+                  (struct sockaddr*) &m_udpAddr, sizeof(m_udpAddr));
   }
   else
   {
@@ -190,8 +195,8 @@ int Network::write(const std::vector<uint8_t> &buffer)
 {
   if (m_isUDP)
   {
-    sendto(m_recvSocket, reinterpret_cast<const char*>(buffer.data()), (int)buffer.size(), 0,
-      (struct sockaddr*) &m_udpAddr, sizeof(m_udpAddr));
+    return sendto(m_recvSocket, reinterpret_cast<const char*>(buffer.data()), (int)buffer.size(), 0,
+                  (struct sockaddr*) &m_udpAddr, sizeof(m_udpAddr));
   }
   else
   { 
