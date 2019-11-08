@@ -13,24 +13,15 @@
 // Version "$Revision: 15145 $"
 //
 
+#include <cassert>
 #include "VisionaryControl.h"
 #include "VisionaryEndian.h"
+#include "CoLaParameterWriter.h"
+#include "CoLaParameterReader.h"
+#include "CoLaBProtocolHandler.h"
+#include "TcpSocket.h"
 
-#include "CoLaBCommandBuilder.h"
-#include "CoLaBCommandReader.h"
-
-VisionaryControl::VisionaryControl() :
-  Network(DEFAULT_PORT)
-{
-}
-
-VisionaryControl::VisionaryControl(unsigned long ipAddress) :
-  Network(ipAddress, DEFAULT_PORT)
-{
-}
-
-VisionaryControl::VisionaryControl(unsigned long ipAddress, unsigned short port) :
-  Network(ipAddress, port)
+VisionaryControl::VisionaryControl()
 {
 }
 
@@ -38,26 +29,76 @@ VisionaryControl::~VisionaryControl()
 {
 }
 
+bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std::uint16_t port, uint32_t sessionTimeout_ms)
+{
+  m_pProtocolHandler = nullptr;
+  m_pTransport = nullptr;
+
+  std::unique_ptr<TcpSocket> pTransport(new TcpSocket());
+  
+  if (!pTransport->connect(hostname, port))
+  {
+    return false;
+  }
+
+  std::unique_ptr<IProtocolHandler> pProtocolHandler;
+
+  switch (type)
+  {
+  case COLA_B:
+    pProtocolHandler = std::unique_ptr<IProtocolHandler>(new CoLaBProtocolHandler(*pTransport));
+    if (!m_pProtocolHandler->openSession(sessionTimeout_ms))
+    {
+      pTransport->shutdown();
+      return false;
+    }
+    break;
+  case COLA_2:
+    //break;
+  default:
+    assert(false /* unsupported protocol*/);
+    return false;
+  }
+
+  m_pTransport = pTransport;
+  m_pProtocolHandler = pProtocolHandler;
+  return true;
+}
+
+void VisionaryControl::close()
+{
+  if (m_pProtocolHandler)
+  {
+    m_pProtocolHandler->closeSession();
+    m_pProtocolHandler = nullptr;
+  }
+  if (m_pTransport)
+  {
+    m_pTransport->shutdown();
+    m_pTransport = nullptr;
+  }
+}
+
 bool VisionaryControl::login(CoLaUserLevel::Enum userLevel, const char* password)
 {
-  CoLaBCommand loginCommand = CoLaBCommandBuilder(CoLaCommandType::METHOD_INVOCATION, "SetAccessMode").parameterSInt(userLevel).parameterPasswordMD5(password).build();
-  CoLaBCommand loginResponse = sendCommand(loginCommand);
+  CoLaCommand loginCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "SetAccessMode").parameterSInt(userLevel).parameterPasswordMD5(password).build();
+  CoLaCommand loginResponse = sendCommand(loginCommand);
 
   if (loginResponse.getError() == CoLaError::OK)
   {
-    return CoLaBCommandReader(loginResponse).readBool();
+    return CoLaParameterReader(loginResponse).readBool();
   }
   return false;
 }
 
 bool VisionaryControl::logout()
 {
-  CoLaBCommand runCommand = CoLaBCommandBuilder(CoLaCommandType::METHOD_INVOCATION, "Run").build();
-  CoLaBCommand runResponse = sendCommand(runCommand);
+  CoLaCommand runCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "Run").build();
+  CoLaCommand runResponse = sendCommand(runCommand);
   
   if (runResponse.getError() == CoLaError::OK)
   {
-    return CoLaBCommandReader(runResponse).readBool();
+    return CoLaParameterReader(runResponse).readBool();
   }
   return false;
 }
@@ -90,11 +131,11 @@ std::string VisionaryControl::receiveCoLaResponse()
   return (buffer.data());
 }
 
-CoLaBCommand VisionaryControl::receiveCoLaBCommand()
+CoLaCommand VisionaryControl::receiveCoLaCommand()
 {
   if (!syncCoLa())
   {
-    return CoLaBCommand::networkErrorCommand();
+    return CoLaCommand::networkErrorCommand();
   }
 
   //-----------------------------------------------
@@ -103,7 +144,7 @@ CoLaBCommand VisionaryControl::receiveCoLaBCommand()
 
   if (!receiveData(sizeof(uint32_t), buffer))
   {
-    return CoLaBCommand::networkErrorCommand();
+    return CoLaCommand::networkErrorCommand();
   }
 
   const uint32_t length = readUnalignBigEndian<uint32_t>(buffer.data());
@@ -112,7 +153,7 @@ CoLaBCommand VisionaryControl::receiveCoLaBCommand()
 
   if (!receiveData(bytesToReceive, buffer))
   {
-    return CoLaBCommand::networkErrorCommand();
+    return CoLaCommand::networkErrorCommand();
   }
 
   // Add back magic word and length
@@ -123,46 +164,46 @@ CoLaBCommand VisionaryControl::receiveCoLaBCommand()
   buffer.insert(buffer.begin(), 0x02);
   buffer.insert(buffer.begin(), 0x02);
 
-  return CoLaBCommand(buffer);
+  return CoLaCommand(buffer);
 }
 
 bool VisionaryControl::startAcquisition() 
 {
-  CoLaBCommand startCommand = CoLaBCommandBuilder(CoLaCommandType::METHOD_INVOCATION, "PLAYSTART").build();
-  CoLaBCommand response = sendCommand(startCommand);
+  CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTART").build();
+  CoLaCommand response = sendCommand(startCommand);
 
   return response.getError() == CoLaError::OK;
 }
 
 bool VisionaryControl::stepAcquisition() 
 {
-  CoLaBCommand stepCommand = CoLaBCommandBuilder(CoLaCommandType::METHOD_INVOCATION, "PLAYNEXT").build();
-  CoLaBCommand response = sendCommand(stepCommand);
+  CoLaCommand stepCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYNEXT").build();
+  CoLaCommand response = sendCommand(stepCommand);
 
   return response.getError() == CoLaError::OK;
 }
 
 bool VisionaryControl::stopAcquisition() 
 {
-  CoLaBCommand stopCommand = CoLaBCommandBuilder(CoLaCommandType::METHOD_INVOCATION, "PLAYSTOP").build();
-  CoLaBCommand response = sendCommand(stopCommand);
+  CoLaCommand stopCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTOP").build();
+  CoLaCommand response = sendCommand(stopCommand);
 
   return response.getError() == CoLaError::OK;
 }
 
 bool VisionaryControl::getDataStreamConfig() 
 {
-  CoLaBCommand command = CoLaBCommandBuilder(CoLaCommandType::METHOD_INVOCATION, "GetBlobClientConfig").build();
-  CoLaBCommand response = sendCommand(command);
+  CoLaCommand command = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "GetBlobClientConfig").build();
+  CoLaCommand response = sendCommand(command);
 
   return response.getError() == CoLaError::OK;
 }
 
-CoLaBCommand VisionaryControl::sendCommand(CoLaBCommand & command)
+CoLaCommand VisionaryControl::sendCommand(CoLaCommand & command)
 {
   write(command.getBuffer());
 
-  CoLaBCommand response = receiveCoLaBCommand();
+  CoLaCommand response = receiveCoLaCommand();
 
   return response;
 }
