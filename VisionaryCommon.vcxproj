@@ -78,6 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -161,37 +162,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CoLaBCommand.h" />
-    <ClInclude Include="CoLaBCommandBuilder.h" />
-    <ClInclude Include="CoLaBCommandReader.h" />
+    <ClInclude Include="attic\CoLaUserLevel.h" />
     <ClInclude Include="CoLaBProtocolHandler.h" />
-    <ClInclude Include="CoLaCommandType.h" />
-    <ClInclude Include="CoLaError.h" />
+    <ClInclude Include="CoLaCommand.h" />
+    <ClInclude Include="ControlSession.h" />
     <ClInclude Include="IProtocolHandler.h" />
-    <ClInclude Include="MD5.h" />
+    <ClInclude Include="ITransport.h" />
     <ClInclude Include="PointCloudPlyWriter.h" />
     <ClInclude Include="PointXYZ.h" />
     <ClInclude Include="TcpSocket.h" />
     <ClInclude Include="VisionaryEndian.h" />
-    <ClInclude Include="Network.h" />
     <ClInclude Include="VisionaryControl.h" />
     <ClInclude Include="VisionaryData.h" />
     <ClInclude Include="VisionaryDataStream.h" />
     <ClInclude Include="VisionarySData.h" />
     <ClInclude Include="VisionaryTData.h" />
-    <ClInclude Include="CoLaUserLevel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="attic\MD5.cpp" />
     <ClCompile Include="CoLaBProtocolHandler.cpp" />
     <ClCompile Include="CoLaCommand.cpp" />
     <ClCompile Include="CoLaParameterReader.cpp" />
     <ClCompile Include="CoLaParameterWriter.cpp" />
+    <ClCompile Include="ControlSession.cpp" />
     <ClCompile Include="IProtocolHandler.cpp" />
-    <ClCompile Include="MD5.cpp" />
-    <ClCompile Include="Network.cpp" />
     <ClCompile Include="PointCloudPlyWriter.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
-    <ClCompile Include="VisionaryAutoIPScan.cpp" />
     <ClCompile Include="VisionaryControl.cpp" />
     <ClCompile Include="VisionaryData.cpp" />
     <ClCompile Include="VisionaryDataStream.cpp" />

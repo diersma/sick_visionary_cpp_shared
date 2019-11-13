@@ -34,7 +34,7 @@ bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std:
   m_pProtocolHandler = nullptr;
   m_pTransport = nullptr;
 
-  std::unique_ptr<TcpSocket> pTransport(new TcpSocket());
+  std::unique_ptr<ITransport/*TcpSocket*/> pTransport(new TcpSocket());
   
   if (!pTransport->connect(hostname, port))
   {
@@ -47,16 +47,18 @@ bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std:
   {
   case COLA_B:
     pProtocolHandler = std::unique_ptr<IProtocolHandler>(new CoLaBProtocolHandler(*pTransport));
-    if (!m_pProtocolHandler->openSession(sessionTimeout_ms))
-    {
-      pTransport->shutdown();
-      return false;
-    }
     break;
   case COLA_2:
-    //break;
+    //pProtocolHandler = std::unique_ptr<IProtocolHandler>(new CoLa2ProtocolHandler(*pTransport));
+    break;
   default:
     assert(false /* unsupported protocol*/);
+    return false;
+  }
+
+  if (!pProtocolHandler->openSession(sessionTimeout_ms))
+  {
+    pTransport->shutdown();
     return false;
   }
 
@@ -105,6 +107,7 @@ bool VisionaryControl::logout()
 
 std::string VisionaryControl::receiveCoLaResponse()
 {
+  
   if (!syncCoLa())
   {
     return "false";
@@ -169,9 +172,25 @@ CoLaCommand VisionaryControl::receiveCoLaCommand()
 
 bool VisionaryControl::startAcquisition() 
 {
+#if 0
+  // example
+  CoLaCommand myCmd = prepareCall("PLAYSTART");
+  ColaParameterWriter(myCmd).uint8(56).flexString16("Hallo");
+
+  ColaParameterWriter myColaParameterWriter(myCmd);
+  myColaParameterWriter.uint8(56);
+  myColaParameterWriter.flexString16("Yoohoo");
+
+  myCmdResponse = send(myCmd);
+
+  uint8 errorCode;
+  uint32 nItems;
+  CoLaParameterReader(myCmdResponse).uint8(errorCode).uint32(nItems);
+#else
+//old
   CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTART").build();
   CoLaCommand response = sendCommand(startCommand);
-
+#endif
   return response.getError() == CoLaError::OK;
 }
 

@@ -18,7 +18,7 @@
 #include <vector>
 #include <stdint.h>
 
-#include "CoLaCommandType.h"
+#include "attic/CoLaCommandType.h"
 #include "CoLaCommand.h"
 
 /// <summary>

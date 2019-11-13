@@ -19,7 +19,7 @@
 #include <string>
 #include <memory>
 #include "CoLaCommand.h"
-#include "CoLaUserLevel.h"
+#include "attic/CoLaUserLevel.h"
 #include "IProtocolHandler.h"
 #include "ITransport.h"
 

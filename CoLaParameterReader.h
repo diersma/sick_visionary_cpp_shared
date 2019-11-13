@@ -20,7 +20,7 @@
 #include "CoLaCommand.h"
 
 /// <summary>
-/// Class for reading data from a <see cref="CoLaBCommand" />.
+/// Class for reading data from a <see cref="CoLaCommand" />.
 /// </summary>
 class CoLaParameterReader
 {

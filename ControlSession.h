@@ -11,6 +11,9 @@
 #define CONTROLSESSION_H_INCLUDED
 //---------------------------------------------------------------------------------------
 #include <string>
+#include "attic/CoLaUserLevel.h"
+#include "CoLaCommand.h"
+
 //---------------------------------------------------------------------------------------
 
 class ControlSession
@@ -19,7 +22,7 @@ public:
   ControlSession();
   virtual ~ControlSession();
 
-  void login(UserLevel userlevel, const std::string& password);
+  void login(CoLaUserLevel::Enum userlevel, const std::string& password);
   void logout();
 
   CoLaCommand prepareRead(const std::string& varname);
@@ -32,3 +35,4 @@ public:
 //---------------------------------------------------------------------------------------
 
 #endif /* CONTROLSESSION_H_INCLUDED */
+

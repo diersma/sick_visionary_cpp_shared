@@ -4,11 +4,15 @@
 #include <cstddef>
 #include <cstdint>
 #include <vector>
+#include <string>
 
 class ITransport
 {
 public:
 	virtual ~ITransport() {}; // destructor, use it to call destructor of the inherit classes
+
+  virtual int connect(const std::string& hostname, uint16_t port) = 0;
+  virtual int shutdown() = 0;
 
   /// Send data on socket to device
   ///

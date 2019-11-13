@@ -30,9 +30,6 @@
     <ClInclude Include="VisionaryControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Network.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VisionaryEndian.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,27 +39,6 @@
     <ClInclude Include="PointXYZ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoLaCommandType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CoLaBCommandBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CoLaBCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CoLaUserLevel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CoLaBCommandReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MD5.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CoLaError.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IProtocolHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -70,6 +46,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TcpSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlSession.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="attic\CoLaUserLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoLaCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ITransport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,16 +77,7 @@
     <ClCompile Include="VisionaryControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Network.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PointCloudPlyWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MD5.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VisionaryAutoIPScan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CoLaCommand.cpp">
@@ -117,6 +96,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TcpSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="attic\MD5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlSession.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
