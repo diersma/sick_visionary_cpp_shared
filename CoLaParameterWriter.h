@@ -38,6 +38,9 @@ public:
   /// <param name="type">Type of command.</param>
   /// <param name="command">The command, e.g. for methods this should be the "communication name" from the CID.</param>
   CoLaParameterWriter(CoLaCommandType::Enum type, const char* name);
+  
+  CoLaParameterWriter(CoLaCommand Cmd);
+
   ~CoLaParameterWriter();
 
   /// <summary>

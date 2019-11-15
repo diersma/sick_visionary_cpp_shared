@@ -22,6 +22,7 @@
 #include "attic/CoLaUserLevel.h"
 #include "IProtocolHandler.h"
 #include "ITransport.h"
+#include "ControlSession.h"
 
 
 class VisionaryControl
@@ -110,4 +111,5 @@ private:
 
   std::unique_ptr<ITransport>       m_pTransport;
   std::unique_ptr<IProtocolHandler> m_pProtocolHandler;
+  std::unique_ptr<ControlSession>   m_pControlSession;
 };

@@ -24,20 +24,28 @@ ControlSession::~ControlSession()
 
 CoLaCommand ControlSession::prepareRead(const std::string& varname)
 {
-  #if 0
   std::vector<uint8_t> buffer;
   CoLaCommand cmd(buffer);
-  TODO
-#endif
-
+  return cmd;
 }
 
 CoLaCommand ControlSession::prepareWrite(const std::string& varname)
 {
+  std::vector<uint8_t> buffer;
+  CoLaCommand cmd(buffer);
+  return cmd;
 }
 
 CoLaCommand ControlSession::prepareCall(const std::string& varname)
 {
+  std::vector<uint8_t> buffer;
+  CoLaCommand cmd(buffer);
+  return cmd;
+}
+
+CoLaCommand ControlSession::send(const CoLaCommand& cmd)
+{
+  return cmd;
 }
 
 

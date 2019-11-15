@@ -165,6 +165,8 @@
     <ClInclude Include="attic\CoLaUserLevel.h" />
     <ClInclude Include="CoLaBProtocolHandler.h" />
     <ClInclude Include="CoLaCommand.h" />
+    <ClInclude Include="CoLaParameterReader.h" />
+    <ClInclude Include="CoLaParameterWriter.h" />
     <ClInclude Include="ControlSession.h" />
     <ClInclude Include="IProtocolHandler.h" />
     <ClInclude Include="ITransport.h" />

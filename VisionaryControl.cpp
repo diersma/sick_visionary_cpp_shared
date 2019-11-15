@@ -20,6 +20,8 @@
 #include "CoLaParameterReader.h"
 #include "CoLaBProtocolHandler.h"
 #include "TcpSocket.h"
+#include "ControlSession.h"
+#include "ColaParameterWriter.h"
 
 VisionaryControl::VisionaryControl()
 {
@@ -36,7 +38,7 @@ bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std:
 
   std::unique_ptr<ITransport/*TcpSocket*/> pTransport(new TcpSocket());
   
-  if (!pTransport->connect(hostname, port))
+  if (pTransport->connect(hostname, port) != 0)
   {
     return false;
   }
@@ -62,8 +64,13 @@ bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std:
     return false;
   }
 
-  m_pTransport = pTransport;
-  m_pProtocolHandler = pProtocolHandler;
+  std::unique_ptr <ControlSession> pControlSession;
+  pControlSession = std::unique_ptr<ControlSession>(new ControlSession());
+
+  m_pTransport = std::move(pTransport);
+  m_pProtocolHandler = std::move(pProtocolHandler);
+  m_pControlSession = std::move(pControlSession);
+
   return true;
 }
 
@@ -79,12 +86,16 @@ void VisionaryControl::close()
     m_pTransport->shutdown();
     m_pTransport = nullptr;
   }
+  if (m_pControlSession)
+  {
+    m_pControlSession = nullptr;
+  }
 }
 
 bool VisionaryControl::login(CoLaUserLevel::Enum userLevel, const char* password)
 {
   CoLaCommand loginCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "SetAccessMode").parameterSInt(userLevel).parameterPasswordMD5(password).build();
-  CoLaCommand loginResponse = sendCommand(loginCommand);
+  CoLaCommand loginResponse = loginCommand /*sendCommand(loginCommand)*/;
 
   if (loginResponse.getError() == CoLaError::OK)
   {
@@ -96,7 +107,7 @@ bool VisionaryControl::login(CoLaUserLevel::Enum userLevel, const char* password
 bool VisionaryControl::logout()
 {
   CoLaCommand runCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "Run").build();
-  CoLaCommand runResponse = sendCommand(runCommand);
+  CoLaCommand runResponse = runCommand /*sendCommand(runCommand)*/;
   
   if (runResponse.getError() == CoLaError::OK)
   {
@@ -105,124 +116,52 @@ bool VisionaryControl::logout()
   return false;
 }
 
-std::string VisionaryControl::receiveCoLaResponse()
-{
-  
-  if (!syncCoLa())
-  {
-    return "false";
-  }
-
-  //-----------------------------------------------
-  // Fill Buffer with data
-  std::vector<char> buffer;
-
-  if (!receiveData(sizeof(uint32_t), buffer))
-  {
-    return "false";
-  }
-
-  const uint32_t length = readUnalignBigEndian<uint32_t>(buffer.data());
-
-  uint32_t bytesToReceive = length + 1;    // packetlength is only the data without STx, Packet Length and Checksum
-
-  if (!receiveData(bytesToReceive, buffer))
-  {
-    return "false";
-  }
-
-  return (buffer.data());
-}
-
-CoLaCommand VisionaryControl::receiveCoLaCommand()
-{
-  if (!syncCoLa())
-  {
-    return CoLaCommand::networkErrorCommand();
-  }
-
-  //-----------------------------------------------
-  // Fill Buffer with data
-  std::vector<uint8_t> buffer;
-
-  if (!receiveData(sizeof(uint32_t), buffer))
-  {
-    return CoLaCommand::networkErrorCommand();
-  }
-
-  const uint32_t length = readUnalignBigEndian<uint32_t>(buffer.data());
-
-  uint32_t bytesToReceive = length + 1;    // packetlength is only the data without STx, Packet Length and Checksum
-
-  if (!receiveData(bytesToReceive, buffer))
-  {
-    return CoLaCommand::networkErrorCommand();
-  }
-
-  // Add back magic word and length
-  const uint32_t bigEndianLength = nativeToBigEndian(length);
-  buffer.insert(buffer.begin(), reinterpret_cast<const uint8_t*>(&bigEndianLength), reinterpret_cast<const uint8_t*>(&bigEndianLength) + 4);
-  buffer.insert(buffer.begin(), 0x02);
-  buffer.insert(buffer.begin(), 0x02);
-  buffer.insert(buffer.begin(), 0x02);
-  buffer.insert(buffer.begin(), 0x02);
-
-  return CoLaCommand(buffer);
-}
-
 bool VisionaryControl::startAcquisition() 
 {
 #if 0
   // example
-  CoLaCommand myCmd = prepareCall("PLAYSTART");
-  ColaParameterWriter(myCmd).uint8(56).flexString16("Hallo");
+  CoLaCommand myCmd = m_pControlSession->prepareCall("PLAYSTART");
+  CoLaParameterWriter(myCmd).parameterUInt(56)/*.flexString16("Hallo")*/;
 
-  ColaParameterWriter myColaParameterWriter(myCmd);
-  myColaParameterWriter.uint8(56);
-  myColaParameterWriter.flexString16("Yoohoo");
+  CoLaParameterWriter myColaParameterWriter(myCmd);
+  myColaParameterWriter.parameterUInt(56);
+  //myColaParameterWriter.flexString16("Yoohoo");
 
-  myCmdResponse = send(myCmd);
+  CoLaCommand myCmdResponse = m_pControlSession->send(myCmd);
 
-  uint8 errorCode;
-  uint32 nItems;
-  CoLaParameterReader(myCmdResponse).uint8(errorCode).uint32(nItems);
-#else
-//old
-  CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTART").build();
-  CoLaCommand response = sendCommand(startCommand);
+  uint8_t errorCode;
+  uint32_t nItems;
+  //CoLaParameterReader(myCmdResponse).readUSInt(errorCode).uint32(nItems);
 #endif
-  return response.getError() == CoLaError::OK;
+  return false;
 }
 
 bool VisionaryControl::stepAcquisition() 
 {
-  CoLaCommand stepCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYNEXT").build();
-  CoLaCommand response = sendCommand(stepCommand);
-
-  return response.getError() == CoLaError::OK;
+  return false;
 }
 
 bool VisionaryControl::stopAcquisition() 
 {
-  CoLaCommand stopCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTOP").build();
-  CoLaCommand response = sendCommand(stopCommand);
+#if 1
+  // example
+  CoLaCommand myCmd = m_pControlSession->prepareCall("PLAYSTOP");
+  CoLaParameterWriter(myCmd).parameterUInt(56)/*.flexString16("Hallo")*/;
 
-  return response.getError() == CoLaError::OK;
+  CoLaParameterWriter myColaParameterWriter(myCmd);
+  myColaParameterWriter.parameterUInt(56);
+  //myColaParameterWriter.flexString16("Yoohoo");
+
+  CoLaCommand myCmdResponse = m_pControlSession->send(myCmd);
+
+  uint8_t errorCode;
+  uint32_t nItems;
+  //CoLaParameterReader(myCmdResponse).readUSInt(errorCode).uint32(nItems);
+#endif
+  return false;
 }
 
 bool VisionaryControl::getDataStreamConfig() 
 {
-  CoLaCommand command = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "GetBlobClientConfig").build();
-  CoLaCommand response = sendCommand(command);
-
-  return response.getError() == CoLaError::OK;
-}
-
-CoLaCommand VisionaryControl::sendCommand(CoLaCommand & command)
-{
-  write(command.getBuffer());
-
-  CoLaCommand response = receiveCoLaCommand();
-
-  return response;
+  return false;
 }

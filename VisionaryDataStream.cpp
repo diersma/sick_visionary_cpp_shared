@@ -19,19 +19,16 @@
 #include <stdio.h>
 
 VisionaryDataStream::VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler) :
-  Network(DEFAULT_PORT),
   m_dataHandler(dataHandler)
 {
 }
 
 VisionaryDataStream::VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler, unsigned long ipAddress) :
-  Network(ipAddress, DEFAULT_PORT),
   m_dataHandler(dataHandler)
 {
 }
 
 VisionaryDataStream::VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler, unsigned long ipAddress, unsigned short port) :
-  Network(ipAddress, port),
   m_dataHandler(dataHandler)
 {
 }
@@ -42,41 +39,7 @@ VisionaryDataStream::~VisionaryDataStream()
 
 bool VisionaryDataStream::getNextFrame()
 {
-  if (!syncCoLa())
-  {
-    return false;
-  }
-
-  std::vector<char> buffer;
-
-  // Read package length
-  if (!receiveData(sizeof(uint32_t), buffer))
-  {
-    printf("Received less than the required 4 package length bytes.\n");
-    return false;
-  }
-  
-  const uint32_t packageLength = readUnalignBigEndian<uint32_t>(buffer.data());
-
-  // Receive the frame data
-  int remainingBytesToReceive = packageLength;
-  receiveData(remainingBytesToReceive, buffer);
-
-  // Check that protocol version and packet type are correct
-  const uint16_t protocolVersion = readUnalignBigEndian<uint16_t>(buffer.data());
-  const uint8_t packetType = readUnalignBigEndian<uint8_t>(buffer.data() + 2);
-  if (protocolVersion != 0x001)
-  {
-    printf("Received unknown protocol version %d.\n", protocolVersion);
-    return false;
-  }
-  if (packetType != 0x62)
-  {
-    printf("Received unknown packet type %d\n.", packetType);
-    return false;
-  }
-
-  return parseSegmentBinaryData(buffer.begin() + 3); // Skip protocolVersion and packetType
+  return false;
 }
 
 bool VisionaryDataStream::parseSegmentBinaryData(std::vector<char>::iterator itBuf)

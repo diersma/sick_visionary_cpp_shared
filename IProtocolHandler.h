@@ -5,7 +5,7 @@
 class IProtocolHandler
 {
 public:
-  bool openSession(uint32_t/*sessionTimeout*/_ms);
-  void closeSession();
+  virtual bool openSession(uint32_t/*sessionTimeout*/_ms) = 0;
+  virtual void closeSession() = 0;
 };
 

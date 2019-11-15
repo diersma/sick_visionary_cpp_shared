@@ -60,6 +60,12 @@
     <ClInclude Include="ITransport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CoLaParameterWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoLaParameterReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisionaryDataStream.cpp">

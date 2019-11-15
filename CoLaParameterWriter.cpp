@@ -18,6 +18,10 @@
 #include "attic/MD5.h"
 #include "VisionaryEndian.h"
 
+CoLaParameterWriter::CoLaParameterWriter(CoLaCommand Cmd)
+{
+}
+
 CoLaParameterWriter::CoLaParameterWriter(CoLaCommandType::Enum type, const char * name)
   : m_type(type)
   , m_name(name)

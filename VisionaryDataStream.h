@@ -18,9 +18,9 @@
 #include <memory>
 #include <boost/shared_ptr.hpp>
 #include "VisionaryData.h"
-#include "Network.h"
+//#include "Network.h"
 
-class VisionaryDataStream: public Network
+class VisionaryDataStream
 {
 public:
   VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler);
