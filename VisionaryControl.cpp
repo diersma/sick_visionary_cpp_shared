@@ -36,7 +36,7 @@ bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std:
   m_pProtocolHandler = nullptr;
   m_pTransport = nullptr;
 
-  std::unique_ptr<ITransport/*TcpSocket*/> pTransport(new TcpSocket());
+  std::unique_ptr<TcpSocket> pTransport(new TcpSocket());
   
   if (pTransport->connect(hostname, port) != 0)
   {
@@ -71,11 +71,16 @@ bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std:
   m_pProtocolHandler = std::move(pProtocolHandler);
   m_pControlSession = std::move(pControlSession);
 
+  m_pAuthentication = new AuthenticationLegacy(*this);
+
   return true;
 }
 
 void VisionaryControl::close()
 {
+  (void)m_pAuthentication->logout();
+  m_pAuthentication = nullptr;
+
   if (m_pProtocolHandler)
   {
     m_pProtocolHandler->closeSession();
@@ -92,28 +97,14 @@ void VisionaryControl::close()
   }
 }
 
-bool VisionaryControl::login(CoLaUserLevel::Enum userLevel, const char* password)
+int VisionaryControl::login(IAuthentication::UserLevel userLevel, const std::string password)
 {
-  CoLaCommand loginCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "SetAccessMode").parameterSInt(userLevel).parameterPasswordMD5(password).build();
-  CoLaCommand loginResponse = loginCommand /*sendCommand(loginCommand)*/;
-
-  if (loginResponse.getError() == CoLaError::OK)
-  {
-    return CoLaParameterReader(loginResponse).readBool();
-  }
-  return false;
+  return m_pAuthentication->login(userLevel, password);
 }
 
-bool VisionaryControl::logout()
+int VisionaryControl::logout()
 {
-  CoLaCommand runCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "Run").build();
-  CoLaCommand runResponse = runCommand /*sendCommand(runCommand)*/;
-  
-  if (runResponse.getError() == CoLaError::OK)
-  {
-    return CoLaParameterReader(runResponse).readBool();
-  }
-  return false;
+  return m_pAuthentication->logout();
 }
 
 bool VisionaryControl::startAcquisition() 

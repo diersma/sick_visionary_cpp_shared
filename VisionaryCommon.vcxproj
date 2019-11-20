@@ -168,6 +168,7 @@
     <ClInclude Include="CoLaParameterReader.h" />
     <ClInclude Include="CoLaParameterWriter.h" />
     <ClInclude Include="ControlSession.h" />
+    <ClInclude Include="IAuthentication.h" />
     <ClInclude Include="IProtocolHandler.h" />
     <ClInclude Include="ITransport.h" />
     <ClInclude Include="PointCloudPlyWriter.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="CoLaParameterReader.cpp" />
     <ClCompile Include="CoLaParameterWriter.cpp" />
     <ClCompile Include="ControlSession.cpp" />
+    <ClCompile Include="IAuthentication.cpp" />
     <ClCompile Include="IProtocolHandler.cpp" />
     <ClCompile Include="PointCloudPlyWriter.cpp" />
     <ClCompile Include="TcpSocket.cpp" />

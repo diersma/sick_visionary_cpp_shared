@@ -66,6 +66,9 @@
     <ClInclude Include="CoLaParameterReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IAuthentication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisionaryDataStream.cpp">
@@ -108,6 +111,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ControlSession.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IAuthentication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

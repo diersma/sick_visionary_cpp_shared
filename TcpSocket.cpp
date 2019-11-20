@@ -15,7 +15,7 @@ int TcpSocket::send(const std::vector<std::uint8_t>& buffer)
   return 0;
 }
 
-int TcpSocket::recv(std::vector<std::uint8_t>& buffer, std::size_t maxBytesToReceive, std::size_t minBytesToReceive)
+int TcpSocket::recv(std::vector<std::uint8_t>& buffer, std::size_t maxBytesToReceive)
 {
   return 0;
 }

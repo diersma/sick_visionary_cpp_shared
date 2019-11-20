@@ -19,9 +19,9 @@
 #include <string>
 #include <memory>
 #include "CoLaCommand.h"
-#include "attic/CoLaUserLevel.h"
 #include "IProtocolHandler.h"
-#include "ITransport.h"
+#include "IAuthentication.h"
+#include "TcpSocket.h"
 #include "ControlSession.h"
 
 
@@ -64,15 +64,16 @@ public:
   void close();
     
 
-  /// <summary>Login to the device.</summary>
-  /// <param name="userLevel">The user level to login as.</param>
-  /// <param name="password">Password for the selected user level.</param>
-  /// <returns>True if login was successful, false otherwise.</returns>
-  bool login(CoLaUserLevel::Enum userLevel, const char* password);
+  /// Login to the device.
+  ///
+  /// \param[in] userLevel The user level to login as.
+  /// \param[in] password   Password for the selected user level.
+  /// \return error code, 0 on success
+  int login(IAuthentication::UserLevel userLevel, const std::string password);
 
   /// <summary>Logout from the device.</summary>
   /// <returns>True if logout was successful, false otherwise.</returns>
-  bool logout();
+  int logout();
 
   /// <summary>
   /// Start streaming the data by calling the "PLAYSTART" method on the device. Works only when acquisition is stopped.
@@ -109,7 +110,8 @@ private:
   // Network byte ordered short value for default configuration port: 2114
   static const short DEFAULT_PORT = 0x4008;
 
-  std::unique_ptr<ITransport>       m_pTransport;
+  std::unique_ptr<TcpSocket>        m_pTransport;
   std::unique_ptr<IProtocolHandler> m_pProtocolHandler;
+  std::unique_ptr<IAuthentication>  m_pAuthentication;
   std::unique_ptr<ControlSession>   m_pControlSession;
 };

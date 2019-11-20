@@ -11,7 +11,7 @@ public:
   int connect(const std::string& hostname, uint16_t port);
   int shutdown();
 
-  int send(const std::vector<std::uint8_t>& buffer);
-  int recv(std::vector<std::uint8_t>& buffer, std::size_t maxBytesToReceive, std::size_t minBytesToReceive);
+  int send(const std::vector<std::uint8_t>& buffer) override;
+  int recv(std::vector<std::uint8_t>& buffer, std::size_t maxBytesToReceive) override;
 };
 

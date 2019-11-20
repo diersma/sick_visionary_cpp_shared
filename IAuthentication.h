@@ -12,11 +12,27 @@
 #define IAUTHENTICATION_H_INCLUDED
 //---------------------------------------------------------------------------------------
 
+#include <string>
+
 class IAuthentication
 {
 public:
+  /// Available CoLa user levels.
+  enum class UserLevel: int8_t
+  {
+    RUN = 0,
+    OPERATOR = 1,
+    MAINTENANCE = 2,
+    AUTHORIZED_CLIENT = 3,
+    SERVICE = 4
+  };
+
+
   IAuthentication();
   virtual ~IAuthentication();
+
+  virtual int login(UserLevel userLevel, const std::string& password) = 0;
+  virtual int logout();
 };
 
 //---------------------------------------------------------------------------------------
