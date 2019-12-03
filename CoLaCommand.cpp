@@ -36,6 +36,8 @@ CoLaCommand::CoLaCommand(std::vector<uint8_t> buffer)
   , m_parameterOffset(0)
 {
   // Read type from header
+  if (buffer.size() < 3)
+    return;
   std::string typeStr(reinterpret_cast<char*>(&buffer[0]), 3);
   if (typeStr.compare("sRN") == 0) m_type = CoLaCommandType::READ_VARIABLE;
   else if (typeStr.compare("sRA") == 0) m_type = CoLaCommandType::READ_VARIABLE_RESPONSE;

@@ -22,6 +22,7 @@
 #include "TcpSocket.h"
 #include "ControlSession.h"
 #include "ColaParameterWriter.h"
+#include "AuthenticationLegacy.h"
 
 VisionaryControl::VisionaryControl()
 {
@@ -65,22 +66,26 @@ bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std:
   }
 
   std::unique_ptr <ControlSession> pControlSession;
-  pControlSession = std::unique_ptr<ControlSession>(new ControlSession());
+  pControlSession = std::unique_ptr<ControlSession>(new ControlSession(*pProtocolHandler));
 
-  m_pTransport = std::move(pTransport);
+  std::unique_ptr <IAuthentication> pAuthentication;
+  pAuthentication = std::unique_ptr<IAuthentication>(new AuthenticationLegacy(*this));
+
+  m_pTransport       = std::move(pTransport);
   m_pProtocolHandler = std::move(pProtocolHandler);
-  m_pControlSession = std::move(pControlSession);
-
-  m_pAuthentication = new AuthenticationLegacy(*this);
+  m_pControlSession  = std::move(pControlSession);
+  m_pAuthentication  = std::move(pAuthentication);
 
   return true;
 }
 
 void VisionaryControl::close()
 {
-  (void)m_pAuthentication->logout();
-  m_pAuthentication = nullptr;
-
+  if (m_pAuthentication)
+  {
+    (void)m_pAuthentication->logout();
+    m_pAuthentication = nullptr;
+  }
   if (m_pProtocolHandler)
   {
     m_pProtocolHandler->closeSession();

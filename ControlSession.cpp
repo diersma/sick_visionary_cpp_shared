@@ -10,16 +10,13 @@
 #include "ControlSession.h"
 //---------------------------------------------------------------------------------------
 
-ControlSession::ControlSession()
+ControlSession::ControlSession(IProtocolHandler& ProtocolHandler)
+  : m_ProtocolHandler(ProtocolHandler)
 {
-// TODO Auto-generated constructor stub
-
 }
 
 ControlSession::~ControlSession()
 {
-// TODO Auto-generated destructor stub
-
 }
 
 CoLaCommand ControlSession::prepareRead(const std::string& varname)
@@ -38,15 +35,18 @@ CoLaCommand ControlSession::prepareWrite(const std::string& varname)
 
 CoLaCommand ControlSession::prepareCall(const std::string& varname)
 {
-  std::vector<uint8_t> buffer;
+  std::vector<uint8_t> buffer = { 's', 'M', 'N' }; // sMN
   CoLaCommand cmd(buffer);
   return cmd;
 }
 
 CoLaCommand ControlSession::send(const CoLaCommand& cmd)
 {
-  return cmd;
+  // ToDo: send command via CoLaProtocolHandler?
+  // ProcolHandler needs to add e.g. header and checksum
+  // Afterwards send to socket and receive the response.
+  // return the response.
+  return m_ProtocolHandler.send(cmd);
 }
-
 
 //---------------------------------------------------------------------------------------

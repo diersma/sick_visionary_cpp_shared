@@ -13,13 +13,14 @@
 #include <string>
 #include "attic/CoLaUserLevel.h"
 #include "CoLaCommand.h"
+#include "IProtocolHandler.h"
 
 //---------------------------------------------------------------------------------------
 
 class ControlSession
 {
 public:
-  ControlSession();
+  ControlSession(IProtocolHandler& ProtocolHandler);
   virtual ~ControlSession();
 
   void login(CoLaUserLevel::Enum userlevel, const std::string& password);
@@ -30,6 +31,9 @@ public:
   CoLaCommand prepareCall(const std::string& varname);
 
   CoLaCommand send(const CoLaCommand& cmd);
+
+private:
+  IProtocolHandler& m_ProtocolHandler;
 };
 
 //---------------------------------------------------------------------------------------

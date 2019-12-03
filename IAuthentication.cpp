@@ -11,16 +11,5 @@
 #include "IAuthentication.h"
 //---------------------------------------------------------------------------------------
 
-IAuthentication::IAuthentication()
-{
-// TODO Auto-generated constructor stub
-
-}
-
-IAuthentication::~IAuthentication()
-{
-// TODO Auto-generated destructor stub
-
-}
 
 //---------------------------------------------------------------------------------------

@@ -27,12 +27,10 @@ public:
     SERVICE = 4
   };
 
-
-  IAuthentication();
-  virtual ~IAuthentication();
+  virtual ~IAuthentication() {};
 
   virtual int login(UserLevel userLevel, const std::string& password) = 0;
-  virtual int logout();
+  virtual int logout() = 0;
 };
 
 //---------------------------------------------------------------------------------------
