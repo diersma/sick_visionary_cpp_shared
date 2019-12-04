@@ -15,90 +15,90 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VisionaryDataStream.h">
+    <ClInclude Include="src\sick\visionary\CoLaBCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisionaryData.h">
+    <ClInclude Include="src\sick\visionary\CoLaBCommandBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisionarySData.h">
+    <ClInclude Include="src\sick\visionary\CoLaBCommandReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisionaryTData.h">
+    <ClInclude Include="src\sick\visionary\CoLaCommandType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisionaryControl.h">
+    <ClInclude Include="src\sick\visionary\CoLaError.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Network.h">
+    <ClInclude Include="src\sick\visionary\MD5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisionaryEndian.h">
+    <ClInclude Include="src\sick\visionary\PointCloudPlyWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointCloudPlyWriter.h">
+    <ClInclude Include="src\sick\visionary\PointXYZ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointXYZ.h">
+    <ClInclude Include="src\sick\visionary\VisionaryEndian.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoLaCommandType.h">
+    <ClInclude Include="src\sick\visionary\Network.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoLaBCommandBuilder.h">
+    <ClInclude Include="src\sick\visionary\VisionaryControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoLaBCommand.h">
+    <ClInclude Include="src\sick\visionary\VisionaryData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoLaUserLevel.h">
+    <ClInclude Include="src\sick\visionary\VisionaryDataStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoLaBCommandReader.h">
+    <ClInclude Include="src\sick\visionary\VisionarySData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MD5.h">
+    <ClInclude Include="src\sick\visionary\VisionaryTData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoLaError.h">
+    <ClInclude Include="src\sick\visionary\CoLaUserLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="VisionaryDataStream.cpp">
+    <ClCompile Include="src\sick\visionary\CoLaBCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VisionaryData.cpp">
+    <ClCompile Include="src\sick\visionary\CoLaBCommandBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VisionarySData.cpp">
+    <ClCompile Include="src\sick\visionary\CoLaBCommandReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VisionaryTData.cpp">
+    <ClCompile Include="src\sick\visionary\MD5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VisionaryControl.cpp">
+    <ClCompile Include="src\sick\visionary\Network.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Network.cpp">
+    <ClCompile Include="src\sick\visionary\PointCloudPlyWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointCloudPlyWriter.cpp">
+    <ClCompile Include="src\sick\visionary\VisionaryAutoIPScan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoLaBCommandBuilder.cpp">
+    <ClCompile Include="src\sick\visionary\VisionaryControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoLaBCommand.cpp">
+    <ClCompile Include="src\sick\visionary\VisionaryData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoLaBCommandReader.cpp">
+    <ClCompile Include="src\sick\visionary\VisionaryDataStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MD5.cpp">
+    <ClCompile Include="src\sick\visionary\VisionarySData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VisionaryAutoIPScan.cpp">
+    <ClCompile Include="src\sick\visionary\VisionaryTData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

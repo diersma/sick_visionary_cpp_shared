@@ -1,34 +1,27 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: August 2017
+// Created: November 2019
 // 
 // @author:  Andreas Richert
+// @author:  Marco Dierschke
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 17:17:50 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15145 $"
-//
 
 #if (_MSC_VER >= 1700)
 
-#include <stdio.h>
-#include <iostream>
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/foreach.hpp>
+#include <strstream>
+#include <memory>
+
 #include <string>
-#include <set>
-#include <exception>
-#include <iostream>
 #include <random>
 #include <chrono>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+
 #include "VisionaryAutoIPScan.h"
+
 
 namespace pt = boost::property_tree;
 
