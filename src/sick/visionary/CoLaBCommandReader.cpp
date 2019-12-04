@@ -6,12 +6,6 @@
 // @author:  Johan Falk
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-09-27 10:44:05 +0200 (Mi, 27 Sep 2017) $
-// Last editor: $Author: falkjo $
-// 
-// Version "$Revision: 14104 $"
-//
 
 #include "CoLaBCommandReader.h"
 #include "VisionaryEndian.h"

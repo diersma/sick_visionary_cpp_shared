@@ -6,16 +6,10 @@
 // @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 16:56:03 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15144 $"
-//
 
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
 
 #include "Network.h"
 
@@ -23,18 +17,18 @@ Network::Network(unsigned short port)
     : m_ipAddress(DEFAULT_IP)
     , m_port(port)
     , m_isUDP(false)
-    , m_recvSocket(-1)
+    , m_recvSocket(INVALID_SOCKET)
 {
-  memset(&m_udpAddr, 0, sizeof(m_udpAddr));
+  std::memset(&m_udpAddr, 0, sizeof(m_udpAddr));
 }
 
 Network::Network(unsigned long ipAddress, unsigned short port)
     : m_ipAddress(ipAddress)
     , m_port(port)
     , m_isUDP(false)
-    , m_recvSocket(-1)
+    , m_recvSocket(INVALID_SOCKET)
 {
-  memset(&m_udpAddr, 0, sizeof(m_udpAddr));
+  std::memset(&m_udpAddr, 0, sizeof(m_udpAddr));
 }
 
 Network::~Network()
@@ -283,8 +277,8 @@ void Network::printLastErrorMessage() const
     NULL, errorCode,
     MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
     (LPWSTR)&errorMessage, 0, NULL);
-  fprintf(stderr, "Error %d: %S\n", errorCode, errorMessage);
+  std::fprintf(stderr, "Error %d: %S\n", errorCode, errorMessage);
 #else
-  fprintf(stderr, "Error %d: %s\n", errno, strerror(errno));
+  std::fprintf(stderr, "Error %d: %s\n", errno, strerror(errno));
 #endif
 }

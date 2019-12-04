@@ -17,8 +17,8 @@
 
 #include <sstream>
 #include <algorithm>
-#include <math.h>
-#include <assert.h>
+#include <cmath>
+#include <cassert>
 #include <limits>
 
 const float bad_point = std::numeric_limits<float>::quiet_NaN();
@@ -93,7 +93,7 @@ void VisionaryData::preCalcCamInfo(const ImageType& imgType)
         double s0 = 0;
         if (RADIAL == imgType)
         {
-          s0 = sqrt(x * x + y * y + z * z) * 1000;
+          s0 = std::sqrt(x * x + y * y + z * z) * 1000;
         }
         else if (PLANAR == imgType)
         {

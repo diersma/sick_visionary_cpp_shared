@@ -1,17 +1,14 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: August 2017
+// Created: November 2019
 // 
 // @author:  Andreas Richert
+// @author:  Marco Dierschke
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 16:56:03 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15144 $"
-//
+
+#include <cstdio>
 
 #include "VisionaryTData.h"
 #include "VisionaryEndian.h"
@@ -20,7 +17,8 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
-const boost::property_tree::ptree& empty_ptree() {
+
+static const boost::property_tree::ptree& empty_ptree() {
   static boost::property_tree::ptree t;
   return t;
 }
@@ -52,7 +50,7 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
     boost::property_tree::xml_parser::read_xml(ss, xmlTree);
   }
   catch (...) {
-    wprintf(L"Reading XML tree in BLOB failed.");
+    std::printf("Reading XML tree in BLOB failed.");
     return false;
   }
 
@@ -115,7 +113,7 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
       "float32" != dataStreamTree.get<std::string>("Z", "") ||
       "float32" != dataStreamTree.get<std::string>("Intensity", ""))
     {
-      wprintf(L"DataSet Cartesian does not contain the expected format. Won't be used");
+      std::printf("DataSet Cartesian does not contain the expected format. Won't be used");
       m_dataSetsActive.hasDataSetCartesian = false;
     }
     // To be sure float is 32 bit on this machine, otherwise the parsing of the binary part won't work
@@ -212,7 +210,7 @@ bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
     dataSetslength += length;
     if (dataSetslength > size)
     {
-      wprintf(L"Malformed data, length in polar scan header does not match package size.");
+      std::printf("Malformed data, length in polar scan header does not match package size.");
       return false;
     }
     itBuf += sizeof(uint32_t);
@@ -267,7 +265,7 @@ bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
 
     if (length != lengthCopy)
     {
-      wprintf(L"Malformed data, length in header does not match package size.");
+      std::printf("Malformed data, length in header does not match package size.");
       return false;
     }
   }
@@ -284,7 +282,7 @@ bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
     dataSetslength += length;
     if (dataSetslength > size)
     {
-      wprintf(L"Malformed data, length in cartesian header does not match package size.");
+      std::printf("Malformed data, length in cartesian header does not match package size.");
       return false;
     }
     itBuf += sizeof(uint32_t);
@@ -310,7 +308,7 @@ bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
 
     if (length != lengthCopy)
     {
-      wprintf(L"Malformed data, length in header does not match package size.");
+      std::printf("Malformed data, length in header does not match package size.");
       return false;
     }
   }

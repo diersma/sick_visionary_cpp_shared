@@ -6,14 +6,11 @@
 // @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-14 16:56:05 +0100 (Do, 14 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15262 $"
-//
 
 #pragma once
+
+#include <string>
+#include <vector>
 
 #include "VisionaryData.h"
 
@@ -29,7 +26,7 @@ public:
   const std::vector<uint32_t>& getRGBAMap() const;
   const std::vector<uint16_t>& getConfidenceMap() const;
   // Calculate and return the Point Cloud in the camera perspective. Units are in meters.
-  void generatePointCloud(std::vector<PointXYZ> &pointCloud) override;
+  void generatePointCloud(std::vector<PointXYZ> &pointCloud);
 
 protected:
   //-----------------------------------------------

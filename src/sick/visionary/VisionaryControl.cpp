@@ -6,12 +6,6 @@
 // @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 17:17:50 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15145 $"
-//
 
 #include "VisionaryControl.h"
 #include "VisionaryEndian.h"
@@ -40,7 +34,7 @@ VisionaryControl::~VisionaryControl()
 
 bool VisionaryControl::login(CoLaUserLevel::Enum userLevel, const char* password)
 {
-  CoLaBCommand loginCommand = CoLaBCommandBuilder(CoLaCommandType::METHOD_INVOCATION, "SetAccessMode").parameterSInt(userLevel).parameterPasswordMD5(password).build();
+  CoLaBCommand loginCommand = CoLaBCommandBuilder(CoLaCommandType::METHOD_INVOCATION, "SetAccessMode").parameterSInt(static_cast<int8_t>(userLevel)).parameterPasswordMD5(password).build();
   CoLaBCommand loginResponse = sendCommand(loginCommand);
 
   if (loginResponse.getError() == CoLaError::OK)
