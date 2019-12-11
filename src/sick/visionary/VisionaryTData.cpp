@@ -62,44 +62,45 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
   m_dataSetsActive.hasDataSetCartesian = static_cast<bool>(dataSetsTree.get_child_optional("DataSetCartesian"));
 
   // DataSetDepthMap specific data 
-  boost::property_tree::ptree dataStreamTree = dataSetsTree.get_child("DataSetDepthMap.FormatDescriptionDepthMap.DataStream", empty_ptree());
-
-  m_cameraParams.width = dataStreamTree.get<int>("Width", 0);
-  m_cameraParams.height = dataStreamTree.get<int>("Height", 0);
-
-  if (m_dataSetsActive.hasDataSetDepthMap)
   {
-    int i = 0;
-    BOOST_FOREACH(const boost::property_tree::ptree::value_type &item, dataStreamTree.get_child("CameraToWorldTransform"))
+    boost::property_tree::ptree dataStreamTree = dataSetsTree.get_child("DataSetDepthMap.FormatDescriptionDepthMap.DataStream", empty_ptree());
+
+    m_cameraParams.width = dataStreamTree.get<int>("Width", 0);
+    m_cameraParams.height = dataStreamTree.get<int>("Height", 0);
+
+    if (m_dataSetsActive.hasDataSetDepthMap)
     {
-      m_cameraParams.cam2worldMatrix[i] = item.second.get_value<double>(0.);
-      ++i;
+      int i = 0;
+      BOOST_FOREACH(const boost::property_tree::ptree::value_type &item, dataStreamTree.get_child("CameraToWorldTransform"))
+      {
+        m_cameraParams.cam2worldMatrix[i] = item.second.get_value<double>(0.);
+        ++i;
+      }
     }
+    else
+    {
+      std::fill(m_cameraParams.cam2worldMatrix, m_cameraParams.cam2worldMatrix + 16, 0.0);
+    }
+
+    m_cameraParams.fx = dataStreamTree.get<double>("CameraMatrix.FX", 0.0);
+    m_cameraParams.fy = dataStreamTree.get<double>("CameraMatrix.FY", 0.0);
+    m_cameraParams.cx = dataStreamTree.get<double>("CameraMatrix.CX", 0.0);
+    m_cameraParams.cy = dataStreamTree.get<double>("CameraMatrix.CY", 0.0);
+
+    m_cameraParams.k1 = dataStreamTree.get<double>("CameraDistortionParams.K1", 0.0);
+    m_cameraParams.k2 = dataStreamTree.get<double>("CameraDistortionParams.K2", 0.0);
+    m_cameraParams.p1 = dataStreamTree.get<double>("CameraDistortionParams.P1", 0.0);
+    m_cameraParams.p2 = dataStreamTree.get<double>("CameraDistortionParams.P2", 0.0);
+    m_cameraParams.k3 = dataStreamTree.get<double>("CameraDistortionParams.K3", 0.0);
+
+    m_cameraParams.f2rc = dataStreamTree.get<double>("FocalToRayCross", 0.0);
+
+    m_distanceByteDepth = getItemLength(dataStreamTree.get<std::string>("Distance", ""));
+    m_intensityByteDepth = getItemLength(dataStreamTree.get<std::string>("Intensity", ""));
+    m_confidenceByteDepth = getItemLength(dataStreamTree.get<std::string>("Confidence", ""));
+
+    m_distanceDecimalExponent = dataStreamTree.get<int>("Distance.<xmlattr>.decimalexponent", 0);
   }
-  else
-  {
-    std::fill(m_cameraParams.cam2worldMatrix, m_cameraParams.cam2worldMatrix + 16, 0.0);
-  }
-
-  m_cameraParams.fx = dataStreamTree.get<double>("CameraMatrix.FX", 0.0);
-  m_cameraParams.fy = dataStreamTree.get<double>("CameraMatrix.FY", 0.0);
-  m_cameraParams.cx = dataStreamTree.get<double>("CameraMatrix.CX", 0.0);
-  m_cameraParams.cy = dataStreamTree.get<double>("CameraMatrix.CY", 0.0);
-
-  m_cameraParams.k1 = dataStreamTree.get<double>("CameraDistortionParams.K1", 0.0);
-  m_cameraParams.k2 = dataStreamTree.get<double>("CameraDistortionParams.K2", 0.0);
-  m_cameraParams.p1 = dataStreamTree.get<double>("CameraDistortionParams.P1", 0.0);
-  m_cameraParams.p2 = dataStreamTree.get<double>("CameraDistortionParams.P2", 0.0);
-  m_cameraParams.k3 = dataStreamTree.get<double>("CameraDistortionParams.K3", 0.0);
-
-  m_cameraParams.f2rc = dataStreamTree.get<double>("FocalToRayCross", 0.0);
-
-  m_distanceByteDepth = getItemLength(dataStreamTree.get<std::string>("Distance", ""));
-  m_intensityByteDepth = getItemLength(dataStreamTree.get<std::string>("Intensity", ""));
-  m_confidenceByteDepth = getItemLength(dataStreamTree.get<std::string>("Confidence", ""));
-
-  m_distanceDecimalExponent = dataStreamTree.get<int>("Distance.<xmlattr>.decimalexponent", 0);
-
   // DataSetPolar2D specific data
   m_numPolarValues = dataSetsTree.get_child("DataSetPolar2D.FormatDescription.DataStream.<xmlattr>.datalength", empty_ptree()).get_value<uint8_t>(0);
 
