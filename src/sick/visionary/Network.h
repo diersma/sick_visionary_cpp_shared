@@ -16,10 +16,6 @@
 #ifdef _WIN32    // Windows specific
 #include <winsock2.h>
 #include <Ws2tcpip.h>
-// to use with other compiler than Visual C++ need to set Linker flag -lws2_32
-#ifdef _MSC_VER
-#pragma comment(lib,"ws2_32.lib")
-#endif
 #else        // Linux specific
 #include <sys/types.h>
 #include <sys/socket.h>

@@ -13,6 +13,13 @@
 
 #include "Network.h"
 
+#ifdef _WIN32    // Windows specific
+// for use with a compiler different from Visual C++ you need to set Linker flag -lws2_32
+#if defined(_MSC_VER)
+#pragma comment(lib,"ws2_32.lib")
+#endif
+#endif
+
 Network::Network(unsigned short port)
     : m_ipAddress(DEFAULT_IP)
     , m_port(port)
@@ -42,7 +49,7 @@ void Network::setIpAddress(unsigned long ipAddress)
 
 void Network::setIpAddress(char * ipAddress)
 {
-  m_ipAddress = inet_addr(ipAddress);
+  inet_pton(AF_INET, ipAddress, &m_ipAddress);
 }
 
 unsigned long Network::getIpAddress()
