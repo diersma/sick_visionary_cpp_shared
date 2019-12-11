@@ -1,17 +1,12 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: August 2017
+// Created: November 2019
 // 
 // @author:  Andreas Richert
+// @author:  Marco Dierschke
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 16:56:03 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15144 $"
-//
 
 #pragma once
 

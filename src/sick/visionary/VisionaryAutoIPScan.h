@@ -6,17 +6,11 @@
 // @author:  Patrick Ebner
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 17:17:50 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15145 $"
-//
 
 #pragma once
 
-#include <cstring>
 #include <string>
+
 #include "Network.h"
 
 class VisionaryAutoIPScan : public Network

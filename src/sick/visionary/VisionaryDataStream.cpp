@@ -1,22 +1,18 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: August 2017
+// Created: November 2019
 // 
 // @author:  Andreas Richert
+// @author:  Marco Dierschke
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 16:56:03 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15144 $"
-//
+
+#include <cstring>
+#include <cstdio>
 
 #include "VisionaryDataStream.h"
 #include "VisionaryEndian.h"
-#include <cstring>
-#include <stdio.h>
 
 VisionaryDataStream::VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler) :
   Network(DEFAULT_PORT),
@@ -52,7 +48,7 @@ bool VisionaryDataStream::getNextFrame()
   // Read package length
   if (!receiveData(sizeof(uint32_t), buffer))
   {
-    printf("Received less than the required 4 package length bytes.\n");
+    std::printf("Received less than the required 4 package length bytes.\n");
     return false;
   }
   
@@ -67,12 +63,12 @@ bool VisionaryDataStream::getNextFrame()
   const uint8_t packetType = readUnalignBigEndian<uint8_t>(buffer.data() + 2);
   if (protocolVersion != 0x001)
   {
-    printf("Received unknown protocol version %d.\n", protocolVersion);
+    std::printf("Received unknown protocol version %d.\n", protocolVersion);
     return false;
   }
   if (packetType != 0x62)
   {
-    printf("Received unknown packet type %d\n.", packetType);
+    std::printf("Received unknown packet type %d\n.", packetType);
     return false;
   }
 
