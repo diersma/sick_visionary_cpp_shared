@@ -23,6 +23,7 @@
 #include "ControlSession.h"
 #include "ColaParameterWriter.h"
 #include "AuthenticationLegacy.h"
+#include "CoLaParameterWriter.h"
 
 VisionaryControl::VisionaryControl()
 {
@@ -114,22 +115,10 @@ int VisionaryControl::logout()
 
 bool VisionaryControl::startAcquisition() 
 {
-#if 0
-  // example
-  CoLaCommand myCmd = m_pControlSession->prepareCall("PLAYSTART");
-  CoLaParameterWriter(myCmd).parameterUInt(56)/*.flexString16("Hallo")*/;
+  CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTART").build();
+  CoLaCommand response = m_pControlSession->send(startCommand);
 
-  CoLaParameterWriter myColaParameterWriter(myCmd);
-  myColaParameterWriter.parameterUInt(56);
-  //myColaParameterWriter.flexString16("Yoohoo");
-
-  CoLaCommand myCmdResponse = m_pControlSession->send(myCmd);
-
-  uint8_t errorCode;
-  uint32_t nItems;
-  //CoLaParameterReader(myCmdResponse).readUSInt(errorCode).uint32(nItems);
-#endif
-  return false;
+  return response.getError() == CoLaError::OK;
 }
 
 bool VisionaryControl::stepAcquisition() 
@@ -139,22 +128,10 @@ bool VisionaryControl::stepAcquisition()
 
 bool VisionaryControl::stopAcquisition() 
 {
-#if 1
-  // example
-  CoLaCommand myCmd = m_pControlSession->prepareCall("PLAYSTOP");
-  CoLaParameterWriter(myCmd).parameterUInt(56)/*.flexString16("Hallo")*/;
+  CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTOP").build();
+  CoLaCommand response = m_pControlSession->send(startCommand);
 
-  CoLaParameterWriter myColaParameterWriter(myCmd);
-  myColaParameterWriter.parameterUInt(56);
-  //myColaParameterWriter.flexString16("Yoohoo");
-
-  CoLaCommand myCmdResponse = m_pControlSession->send(myCmd);
-
-  uint8_t errorCode;
-  uint32_t nItems;
-  //CoLaParameterReader(myCmdResponse).readUSInt(errorCode).uint32(nItems);
-#endif
-  return false;
+  return response.getError() == CoLaError::OK;
 }
 
 bool VisionaryControl::getDataStreamConfig() 

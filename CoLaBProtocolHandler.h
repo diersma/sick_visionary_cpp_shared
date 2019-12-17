@@ -15,4 +15,8 @@ public:
 
   // send cola cmd and receive cola response
   CoLaCommand send(CoLaCommand cmd);
+
+private:
+  ITransport& m_rTransport;
+  uint8_t calculateChecksum(const std::vector<uint8_t>& buffer);
 };

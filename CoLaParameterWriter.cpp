@@ -18,10 +18,6 @@
 #include "attic/MD5.h"
 #include "VisionaryEndian.h"
 
-CoLaParameterWriter::CoLaParameterWriter(CoLaCommand Cmd)
-{
-}
-
 CoLaParameterWriter::CoLaParameterWriter(CoLaCommandType::Enum type, const char * name)
   : m_type(type)
   , m_name(name)
@@ -171,7 +167,7 @@ const CoLaCommand CoLaParameterWriter::build()
   std::vector<uint8_t> buffer = m_buffer;
 
   // Overwrite length
-  *reinterpret_cast<uint32_t*>(&buffer[4]) = nativeToBigEndian(static_cast<uint32_t>(buffer.size()) - 8);
+  //*reinterpret_cast<uint32_t*>(&buffer[4]) = nativeToBigEndian(static_cast<uint32_t>(buffer.size()) - 8);
 
   // Add checksum to end
   //buffer.insert(buffer.end(), calculateChecksum(buffer));

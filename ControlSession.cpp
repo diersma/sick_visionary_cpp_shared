@@ -8,6 +8,7 @@
 /// \version 0.0.1
 //---------------------------------------------------------------------------------------
 #include "ControlSession.h"
+#include "CoLaParameterWriter.h"
 //---------------------------------------------------------------------------------------
 
 ControlSession::ControlSession(IProtocolHandler& ProtocolHandler)
@@ -21,22 +22,19 @@ ControlSession::~ControlSession()
 
 CoLaCommand ControlSession::prepareRead(const std::string& varname)
 {
-  std::vector<uint8_t> buffer;
-  CoLaCommand cmd(buffer);
+  CoLaCommand cmd = CoLaParameterWriter(CoLaCommandType::READ_VARIABLE, varname.c_str()).build();
   return cmd;
 }
 
 CoLaCommand ControlSession::prepareWrite(const std::string& varname)
 {
-  std::vector<uint8_t> buffer;
-  CoLaCommand cmd(buffer);
+  CoLaCommand cmd = CoLaParameterWriter(CoLaCommandType::WRITE_VARIABLE, varname.c_str()).build();
   return cmd;
 }
 
 CoLaCommand ControlSession::prepareCall(const std::string& varname)
 {
-  std::vector<uint8_t> buffer = { 's', 'M', 'N' }; // sMN
-  CoLaCommand cmd(buffer);
+  CoLaCommand cmd = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, varname.c_str()).build();
   return cmd;
 }
 
