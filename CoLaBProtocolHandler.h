@@ -10,7 +10,7 @@ public:
   CoLaBProtocolHandler(ITransport& rTransport);
   ~CoLaBProtocolHandler();
 
-  bool openSession(uint32_t/*sessionTimeout*/_ms);
+  bool openSession(uint8_t sessionTimeout /*secs*/);
   void closeSession();
 
   // send cola cmd and receive cola response

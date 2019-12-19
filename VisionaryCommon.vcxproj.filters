@@ -72,6 +72,9 @@
     <ClInclude Include="AuthenticationLegacy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CoLa2ProtocolHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisionaryDataStream.cpp">
@@ -120,6 +123,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AuthenticationLegacy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoLa2ProtocolHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

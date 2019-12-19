@@ -11,7 +11,7 @@ CoLaBProtocolHandler::~CoLaBProtocolHandler()
 {
 }
 
-bool CoLaBProtocolHandler::openSession(uint32_t/*sessionTimeout _ms*/)
+bool CoLaBProtocolHandler::openSession(uint8_t /*sessionTimeout secs*/)
 {
   // we don't have a session id byte in CoLaB protocol. Nothing to do here.
   return true;

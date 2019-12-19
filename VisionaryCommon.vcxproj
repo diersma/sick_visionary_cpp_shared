@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="attic\CoLaUserLevel.h" />
     <ClInclude Include="AuthenticationLegacy.h" />
+    <ClInclude Include="CoLa2ProtocolHandler.h" />
     <ClInclude Include="CoLaBProtocolHandler.h" />
     <ClInclude Include="CoLaCommand.h" />
     <ClInclude Include="CoLaParameterReader.h" />
@@ -185,6 +186,7 @@
   <ItemGroup>
     <ClCompile Include="attic\MD5.cpp" />
     <ClCompile Include="AuthenticationLegacy.cpp" />
+    <ClCompile Include="CoLa2ProtocolHandler.cpp" />
     <ClCompile Include="CoLaBProtocolHandler.cpp" />
     <ClCompile Include="CoLaCommand.cpp" />
     <ClCompile Include="CoLaParameterReader.cpp" />

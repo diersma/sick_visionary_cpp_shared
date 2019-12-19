@@ -19,6 +19,7 @@
 #include "CoLaParameterWriter.h"
 #include "CoLaParameterReader.h"
 #include "CoLaBProtocolHandler.h"
+#include "CoLa2ProtocolHandler.h"
 #include "TcpSocket.h"
 #include "ControlSession.h"
 #include "ColaParameterWriter.h"
@@ -53,7 +54,7 @@ bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std:
     pProtocolHandler = std::unique_ptr<IProtocolHandler>(new CoLaBProtocolHandler(*pTransport));
     break;
   case COLA_2:
-    //pProtocolHandler = std::unique_ptr<IProtocolHandler>(new CoLa2ProtocolHandler(*pTransport));
+    pProtocolHandler = std::unique_ptr<IProtocolHandler>(new CoLa2ProtocolHandler(*pTransport));
     break;
   default:
     assert(false /* unsupported protocol*/);
@@ -113,9 +114,19 @@ int VisionaryControl::logout()
   return m_pAuthentication->logout();
 }
 
+bool VisionaryControl::getDeviceIdent()
+{
+  CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::READ_VARIABLE, "DeviceIdent").build();
+
+  CoLaCommand response = m_pControlSession->send(startCommand);
+
+  return response.getError() == CoLaError::OK;
+}
+
 bool VisionaryControl::startAcquisition() 
 {
   CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTART").build();
+  
   CoLaCommand response = m_pControlSession->send(startCommand);
 
   return response.getError() == CoLaError::OK;

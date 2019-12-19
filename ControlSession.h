@@ -11,7 +11,7 @@
 #define CONTROLSESSION_H_INCLUDED
 //---------------------------------------------------------------------------------------
 #include <string>
-#include "attic/CoLaUserLevel.h"
+//#include "attic/CoLaUserLevel.h"
 #include "CoLaCommand.h"
 #include "IProtocolHandler.h"
 
@@ -23,8 +23,8 @@ public:
   ControlSession(IProtocolHandler& ProtocolHandler);
   virtual ~ControlSession();
 
-  void login(CoLaUserLevel::Enum userlevel, const std::string& password);
-  void logout();
+  //void login(IAuthentication::UserLevel userLevel, const std::string& password);
+  //void logout();
 
   CoLaCommand prepareRead(const std::string& varname);
   CoLaCommand prepareWrite(const std::string& varname);

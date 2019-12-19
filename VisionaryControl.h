@@ -76,6 +76,12 @@ public:
   int logout();
 
   /// <summary>
+  /// Get device information by calling the "DeviceIdent" method on the device.
+  /// </summary>
+  /// <returns>True if successful, false otherwise.</returns>
+  bool VisionaryControl::getDeviceIdent();
+
+  /// <summary>
   /// Start streaming the data by calling the "PLAYSTART" method on the device. Works only when acquisition is stopped.
   /// </summary>
   /// <returns>True if successful, false otherwise.</returns>
