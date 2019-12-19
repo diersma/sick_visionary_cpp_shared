@@ -29,8 +29,8 @@ public:
 
   virtual ~IAuthentication() {};
 
-  virtual int login(UserLevel userLevel, const std::string& password) = 0;
-  virtual int logout() = 0;
+  virtual bool login(UserLevel userLevel, const std::string& password) = 0;
+  virtual bool logout() = 0;
 };
 
 //---------------------------------------------------------------------------------------

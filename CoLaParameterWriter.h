@@ -109,7 +109,7 @@ public:
   /// </summary>
   /// <param name="str">String to hash and add as parameter.</param>
   /// <returns>This builder.</returns>
-  CoLaParameterWriter& parameterPasswordMD5(const char* str);
+  CoLaParameterWriter& parameterPasswordMD5(const std::string& str);
 
   /// <summary>
   /// Add a string parameter, must be null-terminated.

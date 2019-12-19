@@ -6,29 +6,14 @@
 // @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 16:56:03 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15144 $"
-//
 
-#include "VisionaryDataStream.h"
-#include "VisionaryEndian.h"
 #include <cstring>
 #include <stdio.h>
 
+#include "VisionaryDataStream.h"
+#include "VisionaryEndian.h"
+
 VisionaryDataStream::VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler) :
-  m_dataHandler(dataHandler)
-{
-}
-
-VisionaryDataStream::VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler, unsigned long ipAddress) :
-  m_dataHandler(dataHandler)
-{
-}
-
-VisionaryDataStream::VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler, unsigned long ipAddress, unsigned short port) :
   m_dataHandler(dataHandler)
 {
 }
@@ -37,15 +22,98 @@ VisionaryDataStream::~VisionaryDataStream()
 {
 }
 
-bool VisionaryDataStream::getNextFrame()
+bool VisionaryDataStream::open(const std::string& hostname, std::uint16_t port)
 {
-  return false;
+  m_pTransport = nullptr;
+
+  std::unique_ptr<TcpSocket> pTransport(new TcpSocket());
+
+  if (pTransport->connect(hostname, port) != 0)
+  {
+    return false;
+  }
+
+  m_pTransport = std::move(pTransport);
+
+  return true;
 }
 
-bool VisionaryDataStream::parseSegmentBinaryData(std::vector<char>::iterator itBuf)
+void VisionaryDataStream::close()
+{
+  if (m_pTransport)
+  {
+    m_pTransport->shutdown();
+    m_pTransport = nullptr;
+  }
+}
+
+bool VisionaryDataStream::syncCoLa() const
+{
+  size_t elements = 0;
+  std::vector<std::uint8_t> buffer;
+
+  while (elements < 4)
+  {
+    if (m_pTransport->recv(buffer, 1) < 1)
+    {
+      return false;
+    }
+    if (0x02 == buffer[0])
+    {
+      elements++;
+    }
+    else
+    {
+      elements = 0;
+    }
+  }
+
+  return true;
+}
+
+bool VisionaryDataStream::getNextFrame()
+{
+  if (!syncCoLa())
+  {
+    return false;
+  }
+
+  std::vector<uint8_t> buffer;
+
+  // Read package length
+  if (m_pTransport->recv(buffer, sizeof(uint32_t)) < sizeof(uint32_t))
+  {
+    std::printf("Received less than the required 4 package length bytes.\n");
+    return false;
+  }
+  
+  const uint32_t packageLength = readUnalignBigEndian<uint32_t>(buffer.data());
+
+  // Receive the frame data
+  int remainingBytesToReceive = packageLength;
+  m_pTransport->recv(buffer, remainingBytesToReceive);
+
+  // Check that protocol version and packet type are correct
+  const uint16_t protocolVersion = readUnalignBigEndian<uint16_t>(buffer.data());
+  const uint8_t packetType = readUnalignBigEndian<uint8_t>(buffer.data() + 2);
+  if (protocolVersion != 0x001)
+  {
+    std::printf("Received unknown protocol version %d.\n", protocolVersion);
+    return false;
+  }
+  if (packetType != 0x62)
+  {
+    std::printf("Received unknown packet type %d\n.", packetType);
+    return false;
+  }
+
+  return parseSegmentBinaryData(buffer.begin() + 3); // Skip protocolVersion and packetType
+}
+
+bool VisionaryDataStream::parseSegmentBinaryData(std::vector<uint8_t>::iterator itBuf)
 {
   bool result = false;
-  std::vector<char>::iterator itBufSegment = itBuf;
+  std::vector<uint8_t>::iterator itBufSegment = itBuf;
 
   //-----------------------------------------------
   // Extract informations in Segment-Binary-Data
@@ -67,9 +135,7 @@ bool VisionaryDataStream::parseSegmentBinaryData(std::vector<char>::iterator itB
 
   //-----------------------------------------------
   // First segment contains the XML Metadata
-  uint32_t xmlSegmentSize = offset[1] - offset[0];
-  std::string xmlSegment(&*(itBuf + offset[0]), xmlSegmentSize);
-
+  std::string xmlSegment((itBuf + offset[0]), (itBuf + offset[1]));
   if (m_dataHandler->parseXML(xmlSegment, changeCounter[0]))
   {
     //-----------------------------------------------

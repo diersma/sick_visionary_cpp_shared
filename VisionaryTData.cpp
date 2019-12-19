@@ -125,7 +125,7 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
   return true;
 }
 
-bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t size)
+bool VisionaryTData::parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_t size)
 {
   size_t dataSetslength = 0;
 

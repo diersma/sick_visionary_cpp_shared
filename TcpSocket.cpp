@@ -31,7 +31,7 @@ int TcpSocket::connect(const std::string& hostname, uint16_t port)
   iResult = ::connect(m_recvSocket, (sockaddr*)&recvAddr, sizeof(recvAddr));
   if (iResult != 0)
   {
-    return false;
+    return iResult;
   }
 
   // Set the timeout for the socket to 5 seconds

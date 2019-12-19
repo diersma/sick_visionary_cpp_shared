@@ -69,11 +69,11 @@ public:
   /// \param[in] userLevel The user level to login as.
   /// \param[in] password   Password for the selected user level.
   /// \return error code, 0 on success
-  int login(IAuthentication::UserLevel userLevel, const std::string password);
+  bool login(IAuthentication::UserLevel userLevel, const std::string password);
 
   /// <summary>Logout from the device.</summary>
   /// <returns>True if logout was successful, false otherwise.</returns>
-  int logout();
+  bool logout();
 
   /// <summary>
   /// Start streaming the data by calling the "PLAYSTART" method on the device. Works only when acquisition is stopped.
@@ -106,9 +106,6 @@ public:
 private:
   std::string receiveCoLaResponse();
   CoLaCommand receiveCoLaCommand();
-
-  // Network byte ordered short value for default configuration port: 2114
-  static const short DEFAULT_PORT = 0x4008;
 
   std::unique_ptr<TcpSocket>        m_pTransport;
   std::unique_ptr<IProtocolHandler> m_pProtocolHandler;
