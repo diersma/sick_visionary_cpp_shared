@@ -55,23 +55,35 @@ CoLaCommand CoLaBProtocolHandler::send(CoLaCommand cmd)
   //
   // get response
   //
-  
-  m_rTransport.recv(buffer, sizeof(uint32_t));
-  // check for magic bytes
-  const std::vector<uint8_t> MagicBytes = { 0x02, 0x02, 0x02, 0x02 };
-  bool result = std::equal(MagicBytes.begin(), MagicBytes.end(), buffer.begin());
-  if (result)
+
+  size_t stxRecv = 0;
+
+  while (stxRecv < 4)
+  {
+    if (m_rTransport.recv(buffer, 1) < 1)
+    {
+      break;
+    }
+    if (0x02 == buffer[0])
+    {
+      stxRecv++;
+    }
+    else
+    {
+      stxRecv = 0;
+    }
+  }
+  buffer.clear();
+
+  if (stxRecv == 4)
   {
     // get length
     m_rTransport.recv(buffer, sizeof(uint32_t));
-    const uint32_t length = readUnalignBigEndian<uint32_t>(buffer.data());
+    const uint32_t length = readUnalignBigEndian<uint32_t>(buffer.data()) + 1; // packetlength is only the data without STx, Packet Length and Checksum, add Checksum to get end of data
+    buffer.clear();
     m_rTransport.recv(buffer, length);
   }
-  else
-  {
-    // drop invalid data
-    buffer.clear();
-  }
+
   CoLaCommand response(buffer);
   return response;
 }
