@@ -89,7 +89,7 @@ public:
 
   // Parse the Binary data part to extract the image data. 
   // Returns true when parsing was successful.
-  virtual bool parseBinaryData(std::vector<char>::iterator inputBuffer, size_t length) = 0;
+  virtual bool parseBinaryData(std::vector<uint8_t>::iterator inputBuffer, size_t length) = 0;
 
 protected:
   // Device specific image types

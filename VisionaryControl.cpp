@@ -6,25 +6,17 @@
 // @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 17:17:50 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15145 $"
-//
 
 #include <cassert>
 #include "VisionaryControl.h"
 #include "VisionaryEndian.h"
-#include "CoLaParameterWriter.h"
-#include "CoLaParameterReader.h"
 #include "CoLaBProtocolHandler.h"
 #include "CoLa2ProtocolHandler.h"
 #include "TcpSocket.h"
 #include "ControlSession.h"
-#include "ColaParameterWriter.h"
 #include "AuthenticationLegacy.h"
 #include "CoLaParameterWriter.h"
+#include "CoLaParameterReader.h"
 
 VisionaryControl::VisionaryControl()
 {
@@ -104,12 +96,12 @@ void VisionaryControl::close()
   }
 }
 
-int VisionaryControl::login(IAuthentication::UserLevel userLevel, const std::string password)
+bool VisionaryControl::login(IAuthentication::UserLevel userLevel, const std::string password)
 {
   return m_pAuthentication->login(userLevel, password);
 }
 
-int VisionaryControl::logout()
+bool VisionaryControl::logout()
 {
   return m_pAuthentication->logout();
 }
@@ -147,5 +139,13 @@ bool VisionaryControl::stopAcquisition()
 
 bool VisionaryControl::getDataStreamConfig() 
 {
-  return false;
+  CoLaCommand command = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "GetBlobClientConfig").build();
+  CoLaCommand response = m_pControlSession->send(command);
+
+  return response.getError() == CoLaError::OK;
+}
+
+CoLaCommand VisionaryControl::sendCommand(CoLaCommand & command)
+{
+  return m_pControlSession->send(command);
 }

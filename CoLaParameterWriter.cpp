@@ -89,20 +89,18 @@ CoLaParameterWriter& CoLaParameterWriter::parameterBool(const bool boolean)
   return *this;
 }
 
-CoLaParameterWriter& CoLaParameterWriter::parameterPasswordMD5(const char * str)
+CoLaParameterWriter& CoLaParameterWriter::parameterPasswordMD5(const std::string& str)
 {
   uint32_t valueUDInt = 0;
-  if (str != NULL && strlen(str) > 0)
-  {
-    const unsigned char* byteData = MD5(str).getDigest();
 
-    // 128 bit to 32 bit using XOR
-    int byte0 = byteData[0] ^ byteData[4] ^ byteData[8] ^ byteData[12];
-    int byte1 = byteData[1] ^ byteData[5] ^ byteData[9] ^ byteData[13];
-    int byte2 = byteData[2] ^ byteData[6] ^ byteData[10] ^ byteData[14];
-    int byte3 = byteData[3] ^ byteData[7] ^ byteData[11] ^ byteData[15];
-    valueUDInt = static_cast<uint32_t>(byte0 | (byte1 << 8) | (byte2 << 16) | (byte3 << 24));
-  }
+  const unsigned char* byteData = MD5(str).getDigest();
+
+  // 128 bit to 32 bit using XOR
+  int byte0 = byteData[0] ^ byteData[4] ^ byteData[8] ^ byteData[12];
+  int byte1 = byteData[1] ^ byteData[5] ^ byteData[9] ^ byteData[13];
+  int byte2 = byteData[2] ^ byteData[6] ^ byteData[10] ^ byteData[14];
+  int byte3 = byteData[3] ^ byteData[7] ^ byteData[11] ^ byteData[15];
+  valueUDInt = static_cast<uint32_t>(byte0 | (byte1 << 8) | (byte2 << 16) | (byte3 << 24));
 
   // Add as UDInt, it is already big endian
   parameterUDInt(valueUDInt);
