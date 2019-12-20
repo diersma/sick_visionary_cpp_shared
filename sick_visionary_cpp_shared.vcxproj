@@ -162,7 +162,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="attic\CoLaUserLevel.h" />
     <ClInclude Include="AuthenticationLegacy.h" />
     <ClInclude Include="CoLa2ProtocolHandler.h" />
     <ClInclude Include="CoLaBProtocolHandler.h" />
