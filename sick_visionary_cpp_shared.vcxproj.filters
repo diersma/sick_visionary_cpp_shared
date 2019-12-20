@@ -48,10 +48,10 @@
     <ClInclude Include="TcpSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ControlSession.h">
+    <ClInclude Include="MD5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="attic\CoLaUserLevel.h">
+    <ClInclude Include="ControlSession.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CoLaCommand.h">
@@ -113,7 +113,7 @@
     <ClCompile Include="TcpSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="attic\MD5.cpp">
+    <ClCompile Include="MD5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ControlSession.cpp">

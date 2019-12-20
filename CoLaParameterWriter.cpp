@@ -6,16 +6,10 @@
 // @author:  Johan Falk
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-09-27 10:44:05 +0200 (Mi, 27 Sep 2017) $
-// Last editor: $Author: falkjo $
-// 
-// Version "$Revision: 14104 $"
-//
 
 #include "CoLaParameterWriter.h"
 
-#include "attic/MD5.h"
+#include "MD5.h"
 #include "VisionaryEndian.h"
 
 CoLaParameterWriter::CoLaParameterWriter(CoLaCommandType::Enum type, const char * name)
@@ -164,12 +158,6 @@ const CoLaCommand CoLaParameterWriter::build()
   // Copy buffer
   std::vector<uint8_t> buffer = m_buffer;
 
-  // Overwrite length
-  //*reinterpret_cast<uint32_t*>(&buffer[4]) = nativeToBigEndian(static_cast<uint32_t>(buffer.size()) - 8);
-
-  // Add checksum to end
-  //buffer.insert(buffer.end(), calculateChecksum(buffer));
-
   return CoLaCommand(buffer);
 }
 
@@ -190,16 +178,3 @@ void CoLaParameterWriter::writeHeader(CoLaCommandType::Enum type, const char* na
   // Write command name
   *this << name << " ";
 }
-
-#if 0
-// muss raus!
-uint8_t CoLaParameterWriter::calculateChecksum(const std::vector<uint8_t>& buffer)
-{
-    uint8_t checksum = 0;
-    for (size_t i = 8; i < buffer.size(); i++)
-    {
-      checksum ^= buffer[i];
-    }
-    return checksum;
-}
-#endif

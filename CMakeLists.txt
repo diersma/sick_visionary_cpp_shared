@@ -3,17 +3,11 @@
 # 
 # Created: August 2017
 # 
-# @author:	Andreas Richert
+# @author:  Andreas Richert
 # SICK AG, Waldkirch
 # email: TechSupport0905@sick.de
-# 
-# Last commit: $Date: 2017-09-27 10:44:05 +0200 (Mi, 27 Sep 2017) $
-# Last editor: $Author: richean $
-# 
-# Version "$Revision: 14104 $"
-#
 
-project(sick_visionary_common)
+project(sick_visionary_cpp_shared)
 cmake_minimum_required(VERSION 2.8)
 
 include_directories(include)

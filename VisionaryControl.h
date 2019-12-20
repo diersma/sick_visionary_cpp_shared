@@ -79,7 +79,7 @@ public:
   /// Get device information by calling the "DeviceIdent" method on the device.
   /// </summary>
   /// <returns>True if successful, false otherwise.</returns>
-  std::string VisionaryControl::getDeviceIdent();
+  std::string getDeviceIdent();
 
   /// <summary>
   /// Start streaming the data by calling the "PLAYSTART" method on the device. Works only when acquisition is stopped.
