@@ -145,6 +145,8 @@ CoLaCommand CoLa2ProtocolHandler::send(CoLaCommand cmd)
     // drop invalid data
     buffer.clear();
   }
+  buffer.erase(buffer.begin(), buffer.begin() + 8); // drop header
+  buffer.insert(buffer.begin(), 's'); // insert 's'
   CoLaCommand response(buffer);
   return response;
 }

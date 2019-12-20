@@ -106,13 +106,19 @@ bool VisionaryControl::logout()
   return m_pAuthentication->logout();
 }
 
-bool VisionaryControl::getDeviceIdent()
+std::string VisionaryControl::getDeviceIdent()
 {
   CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::READ_VARIABLE, "DeviceIdent").build();
 
   CoLaCommand response = m_pControlSession->send(startCommand);
-
-  return response.getError() == CoLaError::OK;
+  if (response.getError() == CoLaError::OK)
+  {
+    return CoLaParameterReader(response).readFlexString();
+  }
+  else
+  {
+    return "";
+  }
 }
 
 bool VisionaryControl::startAcquisition() 
