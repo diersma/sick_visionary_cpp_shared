@@ -88,7 +88,12 @@ const bool CoLaParameterReader::readBool()
 
 std::string CoLaParameterReader::readFlexString()
 {
-  std::string str(reinterpret_cast<const char*>(&m_command.getBuffer()[m_currentPosition]), readUInt());
+  std::string str("");
+  uint16_t len = readUInt();
+  if (len)
+  {
+    str = std::string(reinterpret_cast<const char*>(&m_command.getBuffer()[m_currentPosition]), len);
+  }
   m_currentPosition += str.length();
   return str;
 }
