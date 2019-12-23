@@ -22,12 +22,13 @@
 class VisionaryControl
 {
 public:
+  /// The numbers used for the protocols are the port numbers.
   enum ProtocolType
   {
     INVALID_PROTOCOL = -1,
-    COLA_A,
-    COLA_B,
-    COLA_2
+    COLA_A = 2111,
+    COLA_B = 2112,
+    COLA_2 = 2122
   };
 
   /// Default session timeout
@@ -42,14 +43,13 @@ public:
   /// \param[in] type     protocol type the sensor understands (CoLa-A, CoLa-B or CoLa-2). 
   ///                     This information is found in the sensor documentation.
   /// \param[in] hostname name or IP address of the Visionary sensor.
-  /// \param[in] port     control command port of the sensor, usually 2112 for CoLa-B or 2122 for CoLa-2.
   ///
   /// \retval true The connection to the sensor successfully was established.
   /// \retval false The connection attempt failed; the sensor is either
   ///               - switched off or has a different IP address or name
   ///               - not available using for PCs network settings (different subnet)
   ///               - the protocol type or the port did not match. Please check your sensor documentation.
-  bool open(ProtocolType type, const std::string& hostname, std::uint16_t port, uint32_t sessionTimeout_ms = kSessionTimeout_ms);
+  bool open(ProtocolType type, const std::string& hostname, uint32_t sessionTimeout_ms = kSessionTimeout_ms);
 
   /// Close a connection
   ///

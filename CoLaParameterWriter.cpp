@@ -173,6 +173,7 @@ void CoLaParameterWriter::writeHeader(CoLaCommandType::Enum type, const char* na
     case CoLaCommandType::METHOD_INVOCATION: *this << "sMN "; break;
     case CoLaCommandType::METHOD_RETURN_VALUE: *this << "sAN "; break;
     case CoLaCommandType::COLA_ERROR: *this << "sFA"; break;
+    default: return;
   }
 
   // Write command name

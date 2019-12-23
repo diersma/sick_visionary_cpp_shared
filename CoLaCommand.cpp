@@ -21,9 +21,9 @@
 CoLaCommand::CoLaCommand(CoLaCommandType::Enum commandType, CoLaError::Enum error, const char* name)
   : m_buffer()
   , m_type(commandType)
-  , m_error(error)
   , m_name(name)
   , m_parameterOffset(0)
+  , m_error(error)
 {
 
 }
@@ -31,9 +31,9 @@ CoLaCommand::CoLaCommand(CoLaCommandType::Enum commandType, CoLaError::Enum erro
 CoLaCommand::CoLaCommand(std::vector<uint8_t> buffer)
   : m_buffer(buffer)
   , m_type(CoLaCommandType::UNKNOWN)
-  , m_error(CoLaError::OK)
   , m_name("")
   , m_parameterOffset(0)
+  , m_error(CoLaError::OK)
 {
   // Read type from header
   if (buffer.size() < 3)

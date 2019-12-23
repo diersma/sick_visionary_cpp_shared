@@ -26,14 +26,14 @@ VisionaryControl::~VisionaryControl()
 {
 }
 
-bool VisionaryControl::open(ProtocolType type, const std::string& hostname, std::uint16_t port, uint32_t sessionTimeout_ms)
+bool VisionaryControl::open(ProtocolType type, const std::string& hostname, uint32_t sessionTimeout_ms)
 {
   m_pProtocolHandler = nullptr;
   m_pTransport = nullptr;
 
   std::unique_ptr<TcpSocket> pTransport(new TcpSocket());
   
-  if (pTransport->connect(hostname, port) != 0)
+  if (pTransport->connect(hostname, htons(type)) != 0)
   {
     return false;
   }
