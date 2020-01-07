@@ -133,7 +133,7 @@ bool VisionaryControl::startAcquisition()
 bool VisionaryControl::stepAcquisition() 
 {
   CoLaCommand command = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYNEXT").build();
-  CoLaCommand response = m_pControlSession->send(startsommand);
+  CoLaCommand response = m_pControlSession->send(command);
 
   return response.getError() == CoLaError::OK;
 }
