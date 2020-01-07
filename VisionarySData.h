@@ -6,12 +6,6 @@
 // @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-14 16:56:05 +0100 (Do, 14 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15262 $"
-//
 
 #pragma once
 

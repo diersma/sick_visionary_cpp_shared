@@ -162,7 +162,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MD5.h" />
     <ClInclude Include="AuthenticationLegacy.h" />
     <ClInclude Include="CoLa2ProtocolHandler.h" />
     <ClInclude Include="CoLaBProtocolHandler.h" />
@@ -173,18 +172,19 @@
     <ClInclude Include="IAuthentication.h" />
     <ClInclude Include="IProtocolHandler.h" />
     <ClInclude Include="ITransport.h" />
+    <ClInclude Include="MD5.h" />
     <ClInclude Include="PointCloudPlyWriter.h" />
     <ClInclude Include="PointXYZ.h" />
     <ClInclude Include="TcpSocket.h" />
-    <ClInclude Include="VisionaryEndian.h" />
+    <ClInclude Include="VisionaryAutoIPScan.h" />
     <ClInclude Include="VisionaryControl.h" />
     <ClInclude Include="VisionaryData.h" />
     <ClInclude Include="VisionaryDataStream.h" />
+    <ClInclude Include="VisionaryEndian.h" />
     <ClInclude Include="VisionarySData.h" />
     <ClInclude Include="VisionaryTData.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MD5.cpp" />
     <ClCompile Include="AuthenticationLegacy.cpp" />
     <ClCompile Include="CoLa2ProtocolHandler.cpp" />
     <ClCompile Include="CoLaBProtocolHandler.cpp" />
@@ -194,8 +194,10 @@
     <ClCompile Include="ControlSession.cpp" />
     <ClCompile Include="IAuthentication.cpp" />
     <ClCompile Include="IProtocolHandler.cpp" />
+    <ClCompile Include="MD5.cpp" />
     <ClCompile Include="PointCloudPlyWriter.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
+    <ClCompile Include="VisionaryAutoIPScan.cpp" />
     <ClCompile Include="VisionaryControl.cpp" />
     <ClCompile Include="VisionaryData.cpp" />
     <ClCompile Include="VisionaryDataStream.cpp" />

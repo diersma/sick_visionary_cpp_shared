@@ -4,6 +4,7 @@
 // Created: May 2019
 // 
 // @author:  Patrick Ebner
+// @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
 
@@ -11,9 +12,8 @@
 
 #include <cstring>
 #include <string>
-#include "Network.h"
 
-class VisionaryAutoIPScan : public Network
+class VisionaryAutoIPScan
 {
 public:
   struct DeviceInfo
