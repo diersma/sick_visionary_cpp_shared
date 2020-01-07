@@ -108,9 +108,9 @@ bool VisionaryControl::logout()
 
 std::string VisionaryControl::getDeviceIdent()
 {
-  CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::READ_VARIABLE, "DeviceIdent").build();
+  CoLaCommand command = CoLaParameterWriter(CoLaCommandType::READ_VARIABLE, "DeviceIdent").build();
 
-  CoLaCommand response = m_pControlSession->send(startCommand);
+  CoLaCommand response = m_pControlSession->send(command);
   if (response.getError() == CoLaError::OK)
   {
     return CoLaParameterReader(response).readFlexString();
@@ -123,22 +123,25 @@ std::string VisionaryControl::getDeviceIdent()
 
 bool VisionaryControl::startAcquisition() 
 {
-  CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTART").build();
+  CoLaCommand command = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTART").build();
   
-  CoLaCommand response = m_pControlSession->send(startCommand);
+  CoLaCommand response = m_pControlSession->send(command);
 
   return response.getError() == CoLaError::OK;
 }
 
 bool VisionaryControl::stepAcquisition() 
 {
-  return false;
+  CoLaCommand command = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYNEXT").build();
+  CoLaCommand response = m_pControlSession->send(startsommand);
+
+  return response.getError() == CoLaError::OK;
 }
 
 bool VisionaryControl::stopAcquisition() 
 {
-  CoLaCommand startCommand = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTOP").build();
-  CoLaCommand response = m_pControlSession->send(startCommand);
+  CoLaCommand command = CoLaParameterWriter(CoLaCommandType::METHOD_INVOCATION, "PLAYSTOP").build();
+  CoLaCommand response = m_pControlSession->send(command);
 
   return response.getError() == CoLaError::OK;
 }
