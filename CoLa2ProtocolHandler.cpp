@@ -44,16 +44,16 @@ bool CoLa2ProtocolHandler::openSession(uint8_t sessionTimeout /*secs*/)
   // get response
   //
 
-  m_rTransport.recv(buffer, sizeof(uint32_t));
+  m_rTransport.read(buffer, sizeof(uint32_t));
   // check for magic bytes
   const std::vector<uint8_t> MagicBytes = { 0x02, 0x02, 0x02, 0x02 };
   bool result = std::equal(MagicBytes.begin(), MagicBytes.end(), buffer.begin());
   if (result)
   {
     // get length
-    m_rTransport.recv(buffer, sizeof(uint32_t));
+    m_rTransport.read(buffer, sizeof(uint32_t));
     const uint32_t length = readUnalignBigEndian<uint32_t>(buffer.data());
-    m_rTransport.recv(buffer, length);
+    m_rTransport.read(buffer, length);
   }
   else
   {
@@ -138,16 +138,16 @@ CoLaCommand CoLa2ProtocolHandler::send(CoLaCommand cmd)
   // get response
   //
   
-  m_rTransport.recv(buffer, sizeof(uint32_t));
+  m_rTransport.read(buffer, sizeof(uint32_t));
   // check for magic bytes
   const std::vector<uint8_t> MagicBytes = { 0x02, 0x02, 0x02, 0x02 };
   bool result = std::equal(MagicBytes.begin(), MagicBytes.end(), buffer.begin());
   if (result)
   {
     // get length
-    m_rTransport.recv(buffer, sizeof(uint32_t));
+    m_rTransport.read(buffer, sizeof(uint32_t));
     const uint32_t length = readUnalignBigEndian<uint32_t>(buffer.data());
-    m_rTransport.recv(buffer, length);
+    m_rTransport.read(buffer, length);
   }
   else
   {

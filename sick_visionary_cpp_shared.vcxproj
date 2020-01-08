@@ -176,6 +176,7 @@
     <ClInclude Include="PointCloudPlyWriter.h" />
     <ClInclude Include="PointXYZ.h" />
     <ClInclude Include="TcpSocket.h" />
+    <ClInclude Include="UdpSocket.h" />
     <ClInclude Include="VisionaryAutoIPScan.h" />
     <ClInclude Include="VisionaryControl.h" />
     <ClInclude Include="VisionaryData.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="MD5.cpp" />
     <ClCompile Include="PointCloudPlyWriter.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
+    <ClCompile Include="UdpSocket.cpp" />
     <ClCompile Include="VisionaryAutoIPScan.cpp" />
     <ClCompile Include="VisionaryControl.cpp" />
     <ClCompile Include="VisionaryData.cpp" />

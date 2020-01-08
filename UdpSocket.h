@@ -1,9 +1,9 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: November 2019
+// Created: January 2020
 // 
-// @author:  Marco Dierschke
+// @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
 
@@ -33,10 +33,12 @@ typedef int SOCKET;
 #define SOCKET_ERROR    (-1)
 #endif
 
-class TcpSocket :
+class UdpSocket :
   public ITransport
 {
 public:
+  UdpSocket();
+
   int connect(const std::string& hostname, uint16_t port);
   int shutdown();
 
@@ -46,5 +48,7 @@ public:
 
 private:
   SOCKET m_socket;
+
+  struct sockaddr_in m_udpAddr;
 };
 

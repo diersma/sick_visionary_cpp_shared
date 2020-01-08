@@ -1,17 +1,24 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: November 2019
+// Created: January 2020
 // 
-// @author:  Marco Dierschke
+// @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
 
-#include "TcpSocket.h"
+#include "UdpSocket.h"
 
-int TcpSocket::connect(const std::string& hostname, uint16_t port)
+UdpSocket::UdpSocket()
+{
+  memset(&m_udpAddr, 0, sizeof(m_udpAddr));
+}
+
+int UdpSocket::connect(const std::string& hostname, uint16_t port)
 {
   int iResult = 0;
+  int trueVal = 1;
+  long timeoutSeconds = 5L;
 #ifdef _WIN32
   //-----------------------------------------------
   // Initialize Winsock
@@ -25,30 +32,22 @@ int TcpSocket::connect(const std::string& hostname, uint16_t port)
 
   //-----------------------------------------------
   // Create a receiver socket to receive datagrams
-  m_socket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+  m_socket = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
   if (m_socket == INVALID_SOCKET) {
     return INVALID_SOCKET;
   }
 
   //-----------------------------------------------
   // Bind the socket to any address and the specified port.
-  sockaddr_in recvAddr;
-  recvAddr.sin_family = AF_INET;
-  recvAddr.sin_port = port;
-  recvAddr.sin_addr.s_addr = inet_addr(hostname.c_str());
-
-  iResult = ::connect(m_socket, (sockaddr*)&recvAddr, sizeof(recvAddr));
-  if (iResult != 0)
-  {
-    return iResult;
-  }
+  m_udpAddr.sin_family = AF_INET;
+  m_udpAddr.sin_port = port;
+  m_udpAddr.sin_addr.s_addr = inet_addr(hostname.c_str());
 
   // Set the timeout for the socket to 5 seconds
-  long timeoutSeconds = 5L;
 #ifdef _WIN32
   // On Windows timeout is a DWORD in milliseconds (https://docs.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-setsockopt)
   long timeoutMs = timeoutSeconds * 1000L;
-  iResult = setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeoutMs, sizeof(DWORD));
+  iResult = setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeoutMs, sizeof(timeoutMs));
 #else
   struct timeval tv;
   tv.tv_sec = timeoutSeconds;  /* 5 seconds Timeout */
@@ -56,10 +55,15 @@ int TcpSocket::connect(const std::string& hostname, uint16_t port)
   iResult = setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(struct timeval));
 #endif
 
+  if (iResult >= NO_ERROR)
+  {
+    iResult = setsockopt(m_socket, SOL_SOCKET, SO_BROADCAST, (const char*)&trueVal, sizeof(trueVal));
+  }
+
   return iResult;
 }
 
-int TcpSocket::shutdown()
+int UdpSocket::shutdown()
 {
   // Close the socket when finished receiving datagrams
 #ifdef _WIN32
@@ -72,13 +76,13 @@ int TcpSocket::shutdown()
   return 0;
 }
 
-int TcpSocket::send(const std::vector<std::uint8_t>& buffer)
+int UdpSocket::send(const std::vector<std::uint8_t>& buffer)
 {
-  // send buffer via TCP socket
-  return ::send(m_socket, (char*)buffer.data(), (int)buffer.size(), 0);
+  // send buffer via UDP socket
+  return sendto(m_socket, reinterpret_cast<const char*>(buffer.data()), (int)buffer.size(), 0, (struct sockaddr*) &m_udpAddr, sizeof(m_udpAddr));
 }
 
-int TcpSocket::recv(std::vector<std::uint8_t>& buffer, std::size_t maxBytesToReceive)
+int UdpSocket::recv(std::vector<std::uint8_t>& buffer, std::size_t maxBytesToReceive)
 {
   // receive from TCP Socket
   buffer.resize(maxBytesToReceive);
@@ -87,7 +91,7 @@ int TcpSocket::recv(std::vector<std::uint8_t>& buffer, std::size_t maxBytesToRec
   return ::recv(m_socket, pBuffer, maxBytesToReceive, 0);
 }
 
-int TcpSocket::read(std::vector<std::uint8_t>& buffer, std::size_t nBytesToReceive)
+int UdpSocket::read(std::vector<std::uint8_t>& buffer, std::size_t nBytesToReceive)
 {
   // receive from TCP Socket
   buffer.resize(nBytesToReceive);

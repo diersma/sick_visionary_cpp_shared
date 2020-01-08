@@ -54,7 +54,7 @@ bool VisionaryDataStream::syncCoLa() const
 
   while (elements < 4)
   {
-    if (m_pTransport->recv(buffer, 1) < 1)
+    if (m_pTransport->read(buffer, 1) < 1)
     {
       return false;
     }
@@ -81,7 +81,7 @@ bool VisionaryDataStream::getNextFrame()
   std::vector<uint8_t> buffer;
 
   // Read package length
-  if (m_pTransport->recv(buffer, sizeof(uint32_t)) < sizeof(uint32_t))
+  if (m_pTransport->read(buffer, sizeof(uint32_t)) < sizeof(uint32_t))
   {
     std::printf("Received less than the required 4 package length bytes.\n");
     return false;
@@ -91,7 +91,7 @@ bool VisionaryDataStream::getNextFrame()
 
   // Receive the frame data
   int remainingBytesToReceive = packageLength;
-  m_pTransport->recv(buffer, remainingBytesToReceive);
+  m_pTransport->read(buffer, remainingBytesToReceive);
 
   // Check that protocol version and packet type are correct
   const uint16_t protocolVersion = readUnalignBigEndian<uint16_t>(buffer.data());

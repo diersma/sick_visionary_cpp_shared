@@ -87,10 +87,10 @@ CoLaCommand CoLaBProtocolHandler::send(CoLaCommand cmd)
   if (stxRecv == 4)
   {
     // get length
-    m_rTransport.recv(buffer, sizeof(uint32_t));
+    m_rTransport.read(buffer, sizeof(uint32_t));
     const uint32_t length = readUnalignBigEndian<uint32_t>(buffer.data()) + 1; // packetlength is only the data without STx, Packet Length and Checksum, add Checksum to get end of data
     buffer.clear();
-    m_rTransport.recv(buffer, length);
+    m_rTransport.read(buffer, length);
   }
 
   CoLaCommand response(buffer);

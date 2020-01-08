@@ -36,13 +36,18 @@ public:
   /// \param[in] buffer buffer containing the bytes that shall be sent.
   /// \param[in] maxBytesToReceive maximum number of bytes to receive.
   ///
-  /// \return OS error code.
+  /// \return number of received bytes, negative values are OS error codes.
   virtual int recv(std::vector<std::uint8_t>& buffer, std::size_t maxBytesToReceive) = 0;
   
   /// Read a number of bytes
   ///
   /// Contrary to recv this method reads precisely \a nBytesToReceive bytes.
-  int read(std::vector<std::uint8_t>& buffer, std::size_t nBytesToReceive);
+  ///
+  /// \param[in] buffer buffer containing the bytes that shall be sent.
+  /// \param[in] maxBytesToReceive maximum number of bytes to receive.
+  ///
+  /// \return number of received bytes, negative values are OS error codes.
+  virtual int read(std::vector<std::uint8_t>& buffer, std::size_t nBytesToReceive) = 0;
 
 };
 
