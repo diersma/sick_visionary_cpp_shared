@@ -7,6 +7,8 @@
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
 
+#include <cstring>
+
 #include "UdpSocket.h"
 
 UdpSocket::UdpSocket()
@@ -55,7 +57,7 @@ int UdpSocket::connect(const std::string& hostname, uint16_t port)
   iResult = setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(struct timeval));
 #endif
 
-  if (iResult >= NO_ERROR)
+  if (iResult >= 0)
   {
     iResult = setsockopt(m_socket, SOL_SOCKET, SO_BROADCAST, (const char*)&trueVal, sizeof(trueVal));
   }
