@@ -11,7 +11,6 @@
 #define CONTROLSESSION_H_INCLUDED
 //---------------------------------------------------------------------------------------
 #include <string>
-//#include "attic/CoLaUserLevel.h"
 #include "CoLaCommand.h"
 #include "IProtocolHandler.h"
 

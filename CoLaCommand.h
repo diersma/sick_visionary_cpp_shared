@@ -12,8 +12,8 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
-#include "attic/CoLaError.h"
-#include "attic/CoLaCommandType.h"
+#include "CoLaError.h"
+#include "CoLaCommandType.h"
 
 class CoLaCommand
 {

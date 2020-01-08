@@ -12,7 +12,7 @@
 #include <vector>
 #include <stdint.h>
 
-#include "attic/CoLaCommandType.h"
+#include "CoLaCommandType.h"
 #include "CoLaCommand.h"
 
 /// <summary>
