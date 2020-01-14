@@ -1,4 +1,6 @@
-# intermediate files
-*/x64
-# hide user configuration
-*.vcxproj.user
+/build/
+/x86/
+/x64/
+/.cproject
+/.project
+/*.user

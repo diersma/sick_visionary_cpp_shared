@@ -15,7 +15,7 @@
 #include "CoLaError.h"
 #include "CoLaCommandType.h"
 
-class CoLaBCommand
+class CoLaCommand
 {
 private:
   std::vector<uint8_t> m_buffer;
@@ -24,13 +24,13 @@ private:
   size_t m_parameterOffset;
   CoLaError::Enum m_error;
 
-  /// <summary>Construct a new <see cref="CoLaBCommand" /> with the given command type, error, and name, but without any data.</summary>
-  CoLaBCommand(CoLaCommandType::Enum commandType, CoLaError::Enum error, const char* name);
+  /// <summary>Construct a new <see cref="CoLaCommand" /> with the given command type, error, and name, but without any data.</summary>
+  CoLaCommand(CoLaCommandType::Enum commandType, CoLaError::Enum error, const char* name);
 
 public:
-  /// <summary>Construct a new <see cref="CoLaBCommand" /> from the given data buffer.</summary>
-  CoLaBCommand(std::vector<uint8_t> buffer);
-  ~CoLaBCommand();
+  /// <summary>Construct a new <see cref="CoLaCommand" /> from the given data buffer.</summary>
+  CoLaCommand(std::vector<uint8_t> buffer);
+  ~CoLaCommand();
 
   /// <summary>Get the binary data buffer.</summary>
   const std::vector<uint8_t>& getBuffer();
@@ -48,6 +48,6 @@ public:
   CoLaError::Enum getError();
 
   /// <summary>Create a command for network errors.</summary>
-  static CoLaBCommand networkErrorCommand();
+  static CoLaCommand networkErrorCommand();
 };
 

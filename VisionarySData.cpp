@@ -1,14 +1,11 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: November 2019
+// Created: August 2017
 // 
 // @author:  Andreas Richert
-// @author:  Marco Dierschke
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-
-#include <cstdio>
 
 #include "VisionarySData.h"
 #include "VisionaryEndian.h"
@@ -17,6 +14,10 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
+const boost::property_tree::ptree& empty_ptree() {
+  static boost::property_tree::ptree t;
+  return t;
+}
 
 VisionarySData::VisionarySData() : VisionaryData()
 {
@@ -45,7 +46,7 @@ bool VisionarySData::parseXML(const std::string & xmlString, uint32_t changeCoun
     boost::property_tree::xml_parser::read_xml(ss, xmlTree);
   }
   catch (...) {
-    std::printf("Reading XML tree in BLOB failed.");
+    wprintf(L"Reading XML tree in BLOB failed.");
     return false;
   }
 
@@ -84,7 +85,7 @@ bool VisionarySData::parseXML(const std::string & xmlString, uint32_t changeCoun
   return true;
 }
 
-bool VisionarySData::parseBinaryData(std::vector<char>::iterator itBuf, size_t size)
+bool VisionarySData::parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_t size)
 {
   const size_t numPixel = m_cameraParams.width * m_cameraParams.height;
   const size_t numBytesZ = numPixel * m_zByteDepth;
@@ -98,7 +99,7 @@ bool VisionarySData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
     const uint32_t length = readUnalignLittleEndian<uint32_t>(&*itBuf);
     if (length > size)
     {
-      std::printf("Malformed data, length in depth map header does not match package size.");
+      wprintf(L"Malformed data, length in depth map header does not match package size.");
       return false;
     }
     itBuf += sizeof(uint32_t);
@@ -150,7 +151,7 @@ bool VisionarySData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
 
     if (length != lengthCopy)
     {
-      std::printf("Malformed data, length in header does not match package size.");
+      wprintf(L"Malformed data, length in header does not match package size.");
       return false;
     }
 

@@ -6,12 +6,6 @@
 // @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-// 
-// Last commit: $Date: 2017-12-06 16:56:03 +0100 (Mi, 06 Dez 2017) $
-// Last editor: $Author: richean $
-// 
-// Version "$Revision: 15144 $"
-//
 
 #pragma once
 
@@ -88,7 +82,7 @@ public:
 
   // Parse the Binary data part to extract the image data. 
   // Returns true when parsing was successful.
-  virtual bool parseBinaryData(std::vector<char>::iterator inputBuffer, size_t length) = 0;
+  virtual bool parseBinaryData(std::vector<uint8_t>::iterator inputBuffer, size_t length) = 0;
 
 protected:
   // Device specific image types

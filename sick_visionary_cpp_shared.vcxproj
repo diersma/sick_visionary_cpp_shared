@@ -78,7 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -88,7 +88,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,7 +115,6 @@
       <SDLCheck>false</SDLCheck>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <DisableSpecificWarnings>4634;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,7 +153,6 @@
       <SDLCheck>false</SDLCheck>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <DisableSpecificWarnings>4634;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,36 +162,49 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\sick\visionary\CoLaBCommand.h" />
-    <ClInclude Include="src\sick\visionary\CoLaBCommandBuilder.h" />
-    <ClInclude Include="src\sick\visionary\CoLaBCommandReader.h" />
-    <ClInclude Include="src\sick\visionary\CoLaCommandType.h" />
-    <ClInclude Include="src\sick\visionary\CoLaError.h" />
-    <ClInclude Include="src\sick\visionary\MD5.h" />
-    <ClInclude Include="src\sick\visionary\PointCloudPlyWriter.h" />
-    <ClInclude Include="src\sick\visionary\PointXYZ.h" />
-    <ClInclude Include="src\sick\visionary\VisionaryEndian.h" />
-    <ClInclude Include="src\sick\visionary\Network.h" />
-    <ClInclude Include="src\sick\visionary\VisionaryControl.h" />
-    <ClInclude Include="src\sick\visionary\VisionaryData.h" />
-    <ClInclude Include="src\sick\visionary\VisionaryDataStream.h" />
-    <ClInclude Include="src\sick\visionary\VisionarySData.h" />
-    <ClInclude Include="src\sick\visionary\VisionaryTData.h" />
-    <ClInclude Include="src\sick\visionary\CoLaUserLevel.h" />
+    <ClInclude Include="AuthenticationLegacy.h" />
+    <ClInclude Include="CoLa2ProtocolHandler.h" />
+    <ClInclude Include="CoLaBProtocolHandler.h" />
+    <ClInclude Include="CoLaCommand.h" />
+    <ClInclude Include="CoLaParameterReader.h" />
+    <ClInclude Include="CoLaParameterWriter.h" />
+    <ClInclude Include="ControlSession.h" />
+    <ClInclude Include="IAuthentication.h" />
+    <ClInclude Include="IProtocolHandler.h" />
+    <ClInclude Include="ITransport.h" />
+    <ClInclude Include="MD5.h" />
+    <ClInclude Include="PointCloudPlyWriter.h" />
+    <ClInclude Include="PointXYZ.h" />
+    <ClInclude Include="TcpSocket.h" />
+    <ClInclude Include="UdpSocket.h" />
+    <ClInclude Include="VisionaryAutoIPScan.h" />
+    <ClInclude Include="VisionaryControl.h" />
+    <ClInclude Include="VisionaryData.h" />
+    <ClInclude Include="VisionaryDataStream.h" />
+    <ClInclude Include="VisionaryEndian.h" />
+    <ClInclude Include="VisionarySData.h" />
+    <ClInclude Include="VisionaryTData.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\sick\visionary\CoLaBCommand.cpp" />
-    <ClCompile Include="src\sick\visionary\CoLaBCommandBuilder.cpp" />
-    <ClCompile Include="src\sick\visionary\CoLaBCommandReader.cpp" />
-    <ClCompile Include="src\sick\visionary\MD5.cpp" />
-    <ClCompile Include="src\sick\visionary\Network.cpp" />
-    <ClCompile Include="src\sick\visionary\PointCloudPlyWriter.cpp" />
-    <ClCompile Include="src\sick\visionary\VisionaryAutoIPScan.cpp" />
-    <ClCompile Include="src\sick\visionary\VisionaryControl.cpp" />
-    <ClCompile Include="src\sick\visionary\VisionaryData.cpp" />
-    <ClCompile Include="src\sick\visionary\VisionaryDataStream.cpp" />
-    <ClCompile Include="src\sick\visionary\VisionarySData.cpp" />
-    <ClCompile Include="src\sick\visionary\VisionaryTData.cpp" />
+    <ClCompile Include="AuthenticationLegacy.cpp" />
+    <ClCompile Include="CoLa2ProtocolHandler.cpp" />
+    <ClCompile Include="CoLaBProtocolHandler.cpp" />
+    <ClCompile Include="CoLaCommand.cpp" />
+    <ClCompile Include="CoLaParameterReader.cpp" />
+    <ClCompile Include="CoLaParameterWriter.cpp" />
+    <ClCompile Include="ControlSession.cpp" />
+    <ClCompile Include="IAuthentication.cpp" />
+    <ClCompile Include="IProtocolHandler.cpp" />
+    <ClCompile Include="MD5.cpp" />
+    <ClCompile Include="PointCloudPlyWriter.cpp" />
+    <ClCompile Include="TcpSocket.cpp" />
+    <ClCompile Include="UdpSocket.cpp" />
+    <ClCompile Include="VisionaryAutoIPScan.cpp" />
+    <ClCompile Include="VisionaryControl.cpp" />
+    <ClCompile Include="VisionaryData.cpp" />
+    <ClCompile Include="VisionaryDataStream.cpp" />
+    <ClCompile Include="VisionarySData.cpp" />
+    <ClCompile Include="VisionaryTData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,14 +1,11 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: November 2019
+// Created: August 2017
 // 
 // @author:  Andreas Richert
-// @author:  Marco Dierschke
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
-
-#include <cstdio>
 
 #include "VisionaryTData.h"
 #include "VisionaryEndian.h"
@@ -17,8 +14,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
-
-static const boost::property_tree::ptree& empty_ptree() {
+const boost::property_tree::ptree& empty_ptree() {
   static boost::property_tree::ptree t;
   return t;
 }
@@ -50,7 +46,7 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
     boost::property_tree::xml_parser::read_xml(ss, xmlTree);
   }
   catch (...) {
-    std::printf("Reading XML tree in BLOB failed.");
+    wprintf(L"Reading XML tree in BLOB failed.");
     return false;
   }
 
@@ -62,45 +58,44 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
   m_dataSetsActive.hasDataSetCartesian = static_cast<bool>(dataSetsTree.get_child_optional("DataSetCartesian"));
 
   // DataSetDepthMap specific data 
+  boost::property_tree::ptree dataStreamTree = dataSetsTree.get_child("DataSetDepthMap.FormatDescriptionDepthMap.DataStream", empty_ptree());
+
+  m_cameraParams.width = dataStreamTree.get<int>("Width", 0);
+  m_cameraParams.height = dataStreamTree.get<int>("Height", 0);
+
+  if (m_dataSetsActive.hasDataSetDepthMap)
   {
-    boost::property_tree::ptree dataStreamTree = dataSetsTree.get_child("DataSetDepthMap.FormatDescriptionDepthMap.DataStream", empty_ptree());
-
-    m_cameraParams.width = dataStreamTree.get<int>("Width", 0);
-    m_cameraParams.height = dataStreamTree.get<int>("Height", 0);
-
-    if (m_dataSetsActive.hasDataSetDepthMap)
+    int i = 0;
+    BOOST_FOREACH(const boost::property_tree::ptree::value_type &item, dataStreamTree.get_child("CameraToWorldTransform"))
     {
-      int i = 0;
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &item, dataStreamTree.get_child("CameraToWorldTransform"))
-      {
-        m_cameraParams.cam2worldMatrix[i] = item.second.get_value<double>(0.);
-        ++i;
-      }
+      m_cameraParams.cam2worldMatrix[i] = item.second.get_value<double>(0.);
+      ++i;
     }
-    else
-    {
-      std::fill(m_cameraParams.cam2worldMatrix, m_cameraParams.cam2worldMatrix + 16, 0.0);
-    }
-
-    m_cameraParams.fx = dataStreamTree.get<double>("CameraMatrix.FX", 0.0);
-    m_cameraParams.fy = dataStreamTree.get<double>("CameraMatrix.FY", 0.0);
-    m_cameraParams.cx = dataStreamTree.get<double>("CameraMatrix.CX", 0.0);
-    m_cameraParams.cy = dataStreamTree.get<double>("CameraMatrix.CY", 0.0);
-
-    m_cameraParams.k1 = dataStreamTree.get<double>("CameraDistortionParams.K1", 0.0);
-    m_cameraParams.k2 = dataStreamTree.get<double>("CameraDistortionParams.K2", 0.0);
-    m_cameraParams.p1 = dataStreamTree.get<double>("CameraDistortionParams.P1", 0.0);
-    m_cameraParams.p2 = dataStreamTree.get<double>("CameraDistortionParams.P2", 0.0);
-    m_cameraParams.k3 = dataStreamTree.get<double>("CameraDistortionParams.K3", 0.0);
-
-    m_cameraParams.f2rc = dataStreamTree.get<double>("FocalToRayCross", 0.0);
-
-    m_distanceByteDepth = getItemLength(dataStreamTree.get<std::string>("Distance", ""));
-    m_intensityByteDepth = getItemLength(dataStreamTree.get<std::string>("Intensity", ""));
-    m_confidenceByteDepth = getItemLength(dataStreamTree.get<std::string>("Confidence", ""));
-
-    m_distanceDecimalExponent = dataStreamTree.get<int>("Distance.<xmlattr>.decimalexponent", 0);
   }
+  else
+  {
+    std::fill(m_cameraParams.cam2worldMatrix, m_cameraParams.cam2worldMatrix + 16, 0.0);
+  }
+
+  m_cameraParams.fx = dataStreamTree.get<double>("CameraMatrix.FX", 0.0);
+  m_cameraParams.fy = dataStreamTree.get<double>("CameraMatrix.FY", 0.0);
+  m_cameraParams.cx = dataStreamTree.get<double>("CameraMatrix.CX", 0.0);
+  m_cameraParams.cy = dataStreamTree.get<double>("CameraMatrix.CY", 0.0);
+
+  m_cameraParams.k1 = dataStreamTree.get<double>("CameraDistortionParams.K1", 0.0);
+  m_cameraParams.k2 = dataStreamTree.get<double>("CameraDistortionParams.K2", 0.0);
+  m_cameraParams.p1 = dataStreamTree.get<double>("CameraDistortionParams.P1", 0.0);
+  m_cameraParams.p2 = dataStreamTree.get<double>("CameraDistortionParams.P2", 0.0);
+  m_cameraParams.k3 = dataStreamTree.get<double>("CameraDistortionParams.K3", 0.0);
+
+  m_cameraParams.f2rc = dataStreamTree.get<double>("FocalToRayCross", 0.0);
+
+  m_distanceByteDepth = getItemLength(dataStreamTree.get<std::string>("Distance", ""));
+  m_intensityByteDepth = getItemLength(dataStreamTree.get<std::string>("Intensity", ""));
+  m_confidenceByteDepth = getItemLength(dataStreamTree.get<std::string>("Confidence", ""));
+
+  m_distanceDecimalExponent = dataStreamTree.get<int>("Distance.<xmlattr>.decimalexponent", 0);
+
   // DataSetPolar2D specific data
   m_numPolarValues = dataSetsTree.get_child("DataSetPolar2D.FormatDescription.DataStream.<xmlattr>.datalength", empty_ptree()).get_value<uint8_t>(0);
 
@@ -114,7 +109,7 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
       "float32" != dataStreamTree.get<std::string>("Z", "") ||
       "float32" != dataStreamTree.get<std::string>("Intensity", ""))
     {
-      std::printf("DataSet Cartesian does not contain the expected format. Won't be used");
+      wprintf(L"DataSet Cartesian does not contain the expected format. Won't be used");
       m_dataSetsActive.hasDataSetCartesian = false;
     }
     // To be sure float is 32 bit on this machine, otherwise the parsing of the binary part won't work
@@ -124,7 +119,7 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
   return true;
 }
 
-bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t size)
+bool VisionaryTData::parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_t size)
 {
   size_t dataSetslength = 0;
 
@@ -211,7 +206,7 @@ bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
     dataSetslength += length;
     if (dataSetslength > size)
     {
-      std::printf("Malformed data, length in polar scan header does not match package size.");
+      wprintf(L"Malformed data, length in polar scan header does not match package size.");
       return false;
     }
     itBuf += sizeof(uint32_t);
@@ -266,7 +261,7 @@ bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
 
     if (length != lengthCopy)
     {
-      std::printf("Malformed data, length in header does not match package size.");
+      wprintf(L"Malformed data, length in header does not match package size.");
       return false;
     }
   }
@@ -283,7 +278,7 @@ bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
     dataSetslength += length;
     if (dataSetslength > size)
     {
-      std::printf("Malformed data, length in cartesian header does not match package size.");
+      wprintf(L"Malformed data, length in cartesian header does not match package size.");
       return false;
     }
     itBuf += sizeof(uint32_t);
@@ -309,7 +304,7 @@ bool VisionaryTData::parseBinaryData(std::vector<char>::iterator itBuf, size_t s
 
     if (length != lengthCopy)
     {
-      std::printf("Malformed data, length in header does not match package size.");
+      wprintf(L"Malformed data, length in header does not match package size.");
       return false;
     }
   }

@@ -1,62 +1,55 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: November 2019
+// Created: May 2019
 // 
+// @author:  Patrick Ebner
 // @author:  Andreas Richert
-// @author:  Marco Dierschke
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
 
 #if (_MSC_VER >= 1700)
 
-#include <strstream>
-#include <memory>
-
-#include <string>
-#include <random>
-#include <chrono>
-
+#include <stdio.h>
+#include <iostream>
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-
+#include <boost/foreach.hpp>
+#include <string>
+#include <set>
+#include <exception>
+#include <iostream>
+#include <random>
+#include <chrono>
 #include "VisionaryAutoIPScan.h"
-
+#include "UdpSocket.h"
 
 namespace pt = boost::property_tree;
 
-
-VisionaryAutoIPScan::VisionaryAutoIPScan() :
-  Network(inet_addr("255.255.255.255"), DEFAULT_PORT)
+VisionaryAutoIPScan::VisionaryAutoIPScan()
 {
-  openUDPSocket();
-}
-
-
-VisionaryAutoIPScan::VisionaryAutoIPScan(unsigned short port) :
-  Network(inet_addr("255.255.255.255"), port)
-{
-  openUDPSocket();
-}
-
-VisionaryAutoIPScan::VisionaryAutoIPScan(unsigned long ipAddress, unsigned short port) :
-  Network(ipAddress, port)
-{
-  openUDPSocket();
 }
 
 VisionaryAutoIPScan::~VisionaryAutoIPScan()
 {
 }
 
-
-std::vector<VisionaryAutoIPScan::DeviceInfo> VisionaryAutoIPScan::doScan(int timeOut)
+std::vector<VisionaryAutoIPScan::DeviceInfo> VisionaryAutoIPScan::doScan(int timeOut, const std::string& broadcastAddress, uint16_t port)
 {
   // Init Random generator
   std::random_device rd;
   std::default_random_engine mt(rd());
   unsigned int teleIdCounter = mt();
   std::vector<VisionaryAutoIPScan::DeviceInfo> deviceList;
+
+  std::unique_ptr<UdpSocket> pTransport(new UdpSocket());
+
+  if (pTransport->connect(broadcastAddress, htons(port)) != 0)
+  {
+    return deviceList;
+  }
 
   // AutoIP Discover Packet
   std::vector<uint8_t> autoIpPacket;
@@ -86,26 +79,22 @@ std::vector<VisionaryAutoIPScan::DeviceInfo> VisionaryAutoIPScan::doScan(int tim
   memcpy(&autoIpPacket.data()[10], &curtelegramID, 4u);
 
   // Send Packet
-  if (!write(autoIpPacket)) {
-    return deviceList;
-  }
+  pTransport->send(autoIpPacket);
 
   // Check for answers to Discover Packet
   const std::chrono::steady_clock::time_point startTime(std::chrono::steady_clock::now());
   while (true)
   {
-    unsigned char receiveBuffer[1400] = {};
-    memset(receiveBuffer, 0, sizeof(receiveBuffer));
-    unsigned int receivedBytes = 0;
+    std::vector<std::uint8_t> receiveBuffer;
     const std::chrono::steady_clock::time_point now(std::chrono::steady_clock::now());
     if ((now - startTime) > std::chrono::milliseconds(timeOut))
     {
       break;
     }
-    if (receiveData(1400, receivedBytes, reinterpret_cast<char*>(receiveBuffer)))
+    if (pTransport->recv(receiveBuffer, 1400) > 16) // 16 bytes minsize
     {
       unsigned int pos = 0;
-      if (receiveBuffer[pos++] != 0x90 || receivedBytes < 16) //0x90 = answer package id and 16 bytes minsize
+      if (receiveBuffer[pos++] != 0x90) //0x90 = answer package id and 16 bytes minsize
       {
         continue;
       }
@@ -121,10 +110,6 @@ std::vector<VisionaryAutoIPScan::DeviceInfo> VisionaryAutoIPScan::doScan(int tim
         continue;
       }
       pos += 2; // unused
-      if (pos + payLoadSize > static_cast<unsigned int>(receivedBytes)) //payload greather than package
-      {
-        continue;
-      }
       // Get XML Payload
       char xmlPayload[1400];
       memset(xmlPayload, 0, sizeof(xmlPayload));
