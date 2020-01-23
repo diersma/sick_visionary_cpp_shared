@@ -84,7 +84,7 @@ bool VisionarySData::parseXML(const std::string & xmlString, uint32_t changeCoun
   return true;
 }
 
-bool VisionarySData::parseBinaryData(std::vector<char>::iterator itBuf, size_t size)
+bool VisionarySData::parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_t size)
 {
   const size_t numPixel = m_cameraParams.width * m_cameraParams.height;
   const size_t numBytesZ = numPixel * m_zByteDepth;

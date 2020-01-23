@@ -1,9 +1,10 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: August 2017
+// Created: May 2019
 // 
 // @author:  Patrick Ebner
+// @author:  Andreas Richert
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
 
@@ -11,9 +12,10 @@
 
 #include <string>
 
-#include "Network.h"
+static const uint16_t DEFAULT_PORT = 30718;
+static const std::string DEFAULT_BROADCAST_ADDR = "255.255.255.255";
 
-class VisionaryAutoIPScan : public Network
+class VisionaryAutoIPScan
 {
 public:
   struct DeviceInfo
@@ -25,16 +27,13 @@ public:
     std::string Port;
   };
   VisionaryAutoIPScan();
-  VisionaryAutoIPScan(unsigned short port);
-  VisionaryAutoIPScan(unsigned long ipAddress, unsigned short port);
-
   ~VisionaryAutoIPScan();
 
   /// <summary>
   /// Runs an autoIP scan and returns a list of devices
   /// </summary>
   /// <returns>A list of devices.</returns>
-  std::vector<DeviceInfo> doScan(int timeOut);
+  std::vector<DeviceInfo> doScan(int timeOut, const std::string& broadcastAddress = DEFAULT_BROADCAST_ADDR, uint16_t port = DEFAULT_PORT);
 
 private:
   DeviceInfo parseAutoIPXml(std::stringstream& rStringStream);

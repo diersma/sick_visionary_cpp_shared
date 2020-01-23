@@ -11,20 +11,20 @@
 
 #include <stdint.h>
 #include <string>
-#include "CoLaBCommand.h"
+#include "CoLaCommand.h"
 
 /// <summary>
-/// Class for reading data from a <see cref="CoLaBCommand" />.
+/// Class for reading data from a <see cref="CoLaCommand" />.
 /// </summary>
-class CoLaBCommandReader
+class CoLaParameterReader
 {
 private:
-  CoLaBCommand m_command;
+  CoLaCommand m_command;
   size_t m_currentPosition;
 
 public:
-  CoLaBCommandReader(CoLaBCommand command);
-  ~CoLaBCommandReader();
+  CoLaParameterReader(CoLaCommand command);
+  ~CoLaParameterReader();
 
   /// <summary>
   /// Rewind the position to the first parameter.

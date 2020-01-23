@@ -59,7 +59,7 @@ protected:
   // Parse the Binary data part to extract the image data. 
   // some variables are commented out, because they are not used in this sample.
   // Returns true when parsing was successful.
-  bool parseBinaryData(std::vector<char>::iterator itBuf, size_t length);
+  bool parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_t length);
 
 private:
   // Indicator for the received data sets
