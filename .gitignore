@@ -1,9 +1,6 @@
-# intermediate files
-*/x64/
-*/x86/
+# intermediate build files
 /build/
-/x86/
-/x64/
+/output/
 # hide generated project files
 /.cproject
 /.project
