@@ -120,7 +120,7 @@ void VisionaryData::generatePointCloud(const std::vector<uint16_t>& map, const I
 
   const float f2rc = static_cast<float>(m_cameraParams.f2rc / 1000.f); // PointCloud should be in [m] and not in [mm]
 
-  const float pixelSizeZ = powf(10.0f, static_cast<float>(m_distanceDecimalExponent));
+  const float pixelSizeZ = m_scaleZ;
 
   //-----------------------------------------------
   // transform each pixel into Cartesian coordinates

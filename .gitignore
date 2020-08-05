@@ -5,4 +5,4 @@
 /.cproject
 /.project
 # hide user configuration
-*.vcxproj.user
+/*.user

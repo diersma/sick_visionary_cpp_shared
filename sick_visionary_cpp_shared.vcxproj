@@ -187,6 +187,7 @@
     <ClInclude Include="VisionaryEndian.h" />
     <ClInclude Include="VisionarySData.h" />
     <ClInclude Include="VisionaryTData.h" />
+    <ClInclude Include="VisionaryTMiniData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AuthenticationLegacy.cpp" />
@@ -208,6 +209,7 @@
     <ClCompile Include="VisionaryDataStream.cpp" />
     <ClCompile Include="VisionarySData.cpp" />
     <ClCompile Include="VisionaryTData.cpp" />
+    <ClCompile Include="VisionaryTMiniData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

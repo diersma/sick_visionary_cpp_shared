@@ -79,7 +79,8 @@ bool VisionarySData::parseXML(const std::string & xmlString, uint32_t changeCoun
   m_rgbaByteDepth = getItemLength(dataStreamTree.get<std::string>("Intensity", ""));
   m_confidenceByteDepth = getItemLength(dataStreamTree.get<std::string>("Confidence", ""));
 
-  m_distanceDecimalExponent = dataStreamTree.get<int>("Z.<xmlattr>.decimalexponent", 0);
+  const auto distanceDecimalExponent = dataStreamTree.get<int>("Z.<xmlattr>.decimalexponent", 0);
+  m_scaleZ = powf(10.0f, static_cast<float>(distanceDecimalExponent));
 
   return true;
 }

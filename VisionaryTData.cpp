@@ -99,7 +99,8 @@ bool VisionaryTData::parseXML(const std::string & xmlString, uint32_t changeCoun
     m_intensityByteDepth = getItemLength(dataStreamTree.get<std::string>("Intensity", ""));
     m_confidenceByteDepth = getItemLength(dataStreamTree.get<std::string>("Confidence", ""));
 
-    m_distanceDecimalExponent = dataStreamTree.get<int>("Distance.<xmlattr>.decimalexponent", 0);
+    const auto distanceDecimalExponent = dataStreamTree.get<int>("Distance.<xmlattr>.decimalexponent", 0);
+    m_scaleZ = powf(10.0f, static_cast<float>(distanceDecimalExponent));
   }
   // DataSetPolar2D specific data
   m_numPolarValues = dataSetsTree.get_child("DataSetPolar2D.FormatDescription.DataStream.<xmlattr>.datalength", empty_ptree()).get_value<uint8_t>(0);
