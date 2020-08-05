@@ -105,8 +105,9 @@ protected:
   // Camera parameters to be read from XML Metadata part
   CameraParameters m_cameraParams;
 
-  /// Decimal exponent for distance image.
-  int m_distanceDecimalExponent;
+  
+  /// Factor to convert unit of distance image to mm
+  float m_scaleZ;
 
   /// Change counter to detect changes in XML
   uint_fast32_t m_changeCounter;

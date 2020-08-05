@@ -1,13 +1,13 @@
 //
 // Copyright note: Redistribution and use in source, with or without modification, are permitted.
 // 
-// Created: August 2017
+// Created: August 2020
 // 
-// @author:  Andreas Richert
+// @author: Patrick Ebner
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
 
-#include "VisionarySData.h"
+#include "VisionaryTMiniData.h"
 #include "VisionaryEndian.h"
 
 // Boost library used for parseXML function
@@ -19,15 +19,17 @@ const boost::property_tree::ptree& empty_ptree() {
   return t;
 }
 
-VisionarySData::VisionarySData() : VisionaryData()
+const float VisionaryTMiniData::DISTANCE_MAP_UNIT = 0.25f;
+
+VisionaryTMiniData::VisionaryTMiniData() : VisionaryData()
 {
 }
 
-VisionarySData::~VisionarySData()
+VisionaryTMiniData::~VisionaryTMiniData()
 {
 }
 
-bool VisionarySData::parseXML(const std::string & xmlString, uint32_t changeCounter)
+bool VisionaryTMiniData::parseXML(const std::string & xmlString, uint32_t changeCounter)
 {
   //-----------------------------------------------
   // Check if the segment data changed since last receive
@@ -50,17 +52,29 @@ bool VisionarySData::parseXML(const std::string & xmlString, uint32_t changeCoun
     return false;
   }
 
-  boost::property_tree::ptree dataStreamTree = xmlTree.get_child("SickRecord.DataSets.DataSetStereo.FormatDescriptionDepthMap.DataStream");
-
   //-----------------------------------------------
   // Extract information stored in XML with boost::property_tree
+  const boost::property_tree::ptree dataSetsTree = xmlTree.get_child("SickRecord.DataSets", empty_ptree());
+  m_dataSetsActive.hasDataSetDepthMap = static_cast<bool>(dataSetsTree.get_child_optional("DataSetDepthMap"));
+
+  // DataSetDepthMap specific data 
+  boost::property_tree::ptree dataStreamTree = dataSetsTree.get_child("DataSetDepthMap.FormatDescriptionDepthMap.DataStream", empty_ptree());
+
   m_cameraParams.width = dataStreamTree.get<int>("Width", 0);
   m_cameraParams.height = dataStreamTree.get<int>("Height", 0);
 
-  int i = 0;
-  BOOST_FOREACH(const boost::property_tree::ptree::value_type &item, dataStreamTree.get_child("CameraToWorldTransform")) {
-    m_cameraParams.cam2worldMatrix[i] = item.second.get_value<double>(0.);
-    ++i;
+  if (m_dataSetsActive.hasDataSetDepthMap)
+  {
+    int i = 0;
+    BOOST_FOREACH(const boost::property_tree::ptree::value_type &item, dataStreamTree.get_child("CameraToWorldTransform"))
+    {
+      m_cameraParams.cam2worldMatrix[i] = item.second.get_value<double>(0.);
+      ++i;
+    }
+  }
+  else
+  {
+    std::fill(m_cameraParams.cam2worldMatrix, m_cameraParams.cam2worldMatrix + 16, 0.0);
   }
 
   m_cameraParams.fx = dataStreamTree.get<double>("CameraMatrix.FX", 0.0);
@@ -76,29 +90,32 @@ bool VisionarySData::parseXML(const std::string & xmlString, uint32_t changeCoun
 
   m_cameraParams.f2rc = dataStreamTree.get<double>("FocalToRayCross", 0.0);
 
-  m_zByteDepth = getItemLength(dataStreamTree.get<std::string>("Z", ""));
-  m_rgbaByteDepth = getItemLength(dataStreamTree.get<std::string>("Intensity", ""));
-  m_confidenceByteDepth = getItemLength(dataStreamTree.get<std::string>("Confidence", ""));
+  m_distanceByteDepth = getItemLength(dataStreamTree.get<std::string>("Distance", ""));
+  m_intensityByteDepth = getItemLength(dataStreamTree.get<std::string>("Intensity", ""));
 
-  const auto distanceDecimalExponent = dataStreamTree.get<int>("Z.<xmlattr>.decimalexponent", 0);
-  m_scaleZ = powf(10.0f, static_cast<float>(distanceDecimalExponent));
+  //const auto distanceDecimalExponent = dataStreamTree.get<int>("Distance.<xmlattr>.decimalexponent", 0);
+  // Scaling is fixed to 0.25mm on ToF Mini
+  m_scaleZ = DISTANCE_MAP_UNIT;
 
   return true;
 }
 
-bool VisionarySData::parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_t size)
+bool VisionaryTMiniData::parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_t size)
 {
-  const size_t numPixel = m_cameraParams.width * m_cameraParams.height;
-  const size_t numBytesZ = numPixel * m_zByteDepth;
-  const size_t numBytesRGBA = numPixel * m_rgbaByteDepth;
-  const size_t numBytesConfidence = numPixel * m_confidenceByteDepth;
+  size_t dataSetslength = 0;
 
+  if (m_dataSetsActive.hasDataSetDepthMap)
+  {
+    const size_t numPixel = m_cameraParams.width * m_cameraParams.height;
+    const size_t numBytesDistance = numPixel * m_distanceByteDepth;
+    const size_t numBytesIntensity = numPixel * m_intensityByteDepth;
 
-  //-----------------------------------------------
-  // The binary part starts with entries for length, a timestamp
-  // and a version identifier
+    //-----------------------------------------------
+    // The binary part starts with entries for length, a timestamp
+    // and a version identifier
     const uint32_t length = readUnalignLittleEndian<uint32_t>(&*itBuf);
-    if (length > size)
+    dataSetslength += length;
+    if (dataSetslength > size)
     {
       wprintf(L"Malformed data, length in depth map header does not match package size.");
       return false;
@@ -130,17 +147,13 @@ bool VisionarySData::parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_
 
     //-----------------------------------------------
     // Extract the Images depending on the informations extracted from the XML part
-    m_zMap.resize(numPixel);
-    memcpy(&m_zMap[0], &*itBuf, numBytesZ);
-    itBuf += numBytesZ;
+    m_distanceMap.resize(numPixel);
+    memcpy(&m_distanceMap[0], &*itBuf, numBytesDistance);
+    itBuf += numBytesDistance;
 
-    m_rgbaMap.resize(numPixel);
-    memcpy(&m_rgbaMap[0], &*itBuf, numBytesRGBA);
-    itBuf += numBytesRGBA;
-
-    m_confidenceMap.resize(numPixel);
-    memcpy(&m_confidenceMap[0], &*itBuf, numBytesConfidence);
-    itBuf += numBytesConfidence;
+    m_intensityMap.resize(numPixel);
+    memcpy(&m_intensityMap[0], &*itBuf, numBytesIntensity);
+    itBuf += numBytesIntensity;
 
     //-----------------------------------------------
     // Data ends with a (unused) 4 Byte CRC field and a copy of the length byte
@@ -155,26 +168,27 @@ bool VisionarySData::parseBinaryData(std::vector<uint8_t>::iterator itBuf, size_
       wprintf(L"Malformed data, length in header does not match package size.");
       return false;
     }
+  }
+  else
+  {
+    m_distanceMap.clear();
+    m_intensityMap.clear();
+  }
 
   return true;
 }
 
-void VisionarySData::generatePointCloud(std::vector<PointXYZ> &pointCloud)
+void VisionaryTMiniData::generatePointCloud(std::vector<PointXYZ> &pointCloud)
 {
-  return VisionaryData::generatePointCloud(m_zMap, VisionaryData::PLANAR, pointCloud);
+  return VisionaryData::generatePointCloud(m_distanceMap, VisionaryData::RADIAL, pointCloud);
 }
 
-const std::vector<uint16_t>& VisionarySData::getZMap() const
+const std::vector<uint16_t>& VisionaryTMiniData::getDistanceMap() const
 {
-  return m_zMap;
+  return m_distanceMap;
 }
 
-const std::vector<uint32_t>& VisionarySData::getRGBAMap() const
+const std::vector<uint16_t>& VisionaryTMiniData::getIntensityMap() const
 {
-  return m_rgbaMap;
-}
-
-const std::vector<uint16_t>& VisionarySData::getConfidenceMap() const
-{
-  return m_confidenceMap;
+  return m_intensityMap;
 }
