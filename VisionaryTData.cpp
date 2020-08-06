@@ -9,6 +9,7 @@
 // email: TechSupport0905@sick.de
 
 #include <cstdio>
+#include <cmath>
 
 #include "VisionaryTData.h"
 #include "VisionaryEndian.h"
