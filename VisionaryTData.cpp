@@ -14,6 +14,8 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
+#include <cmath>
+
 const boost::property_tree::ptree& empty_ptree() {
   static boost::property_tree::ptree t;
   return t;
