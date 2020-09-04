@@ -11,14 +11,13 @@
 #pragma once
 
 #include <memory>
-#include <boost/shared_ptr.hpp>
 #include "VisionaryData.h"
 #include "TcpSocket.h"
 
 class VisionaryDataStream
 {
 public:
-  VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler);
+  VisionaryDataStream(std::shared_ptr<VisionaryData> dataHandler);
   ~VisionaryDataStream();
 
   /// Opens a connection to a Visionary sensor
@@ -46,7 +45,7 @@ public:
   // Returns true when valid frame completely received.
   bool getNextFrame();
 private:
-  boost::shared_ptr<VisionaryData> m_dataHandler;
+  std::shared_ptr<VisionaryData>   m_dataHandler;
   std::unique_ptr<TcpSocket>       m_pTransport;
 
   // Parse the Segment-Binary-Data (Blob data without protocol version and packet type).
