@@ -11,9 +11,12 @@
 
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 #include "PointXYZ.h"
+
+namespace visionary 
+{
 
 /// <summary>Class for writing point clouds to PLY files.</summary>
 class PointCloudPlyWriter
@@ -61,3 +64,4 @@ private:
   PointCloudPlyWriter(const PointCloudPlyWriter&);
 };
 
+}

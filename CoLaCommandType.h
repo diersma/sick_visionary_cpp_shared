@@ -9,6 +9,9 @@
 
 #pragma once
 
+namespace visionary 
+{
+
 // Available CoLa command types.
 namespace CoLaCommandType
 {
@@ -24,4 +27,6 @@ namespace CoLaCommandType
     METHOD_RETURN_VALUE,
     COLA_ERROR
   };
+}
+
 }

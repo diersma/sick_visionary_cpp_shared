@@ -33,6 +33,9 @@ typedef int SOCKET;
 #define SOCKET_ERROR    (-1)
 #endif
 
+namespace visionary 
+{
+
 class TcpSocket :
   public ITransport
 {
@@ -48,3 +51,4 @@ private:
   SOCKET m_socket;
 };
 
+}

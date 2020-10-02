@@ -10,6 +10,8 @@
 #include "CoLaBProtocolHandler.h"
 #include "VisionaryEndian.h"
 
+namespace visionary 
+{
 
 CoLaBProtocolHandler::CoLaBProtocolHandler(ITransport& rTransport)
 : m_rTransport(rTransport)
@@ -105,4 +107,6 @@ uint8_t CoLaBProtocolHandler::calculateChecksum(const std::vector<uint8_t>& buff
     checksum ^= buffer[i];
   }
   return checksum;
+}
+
 }

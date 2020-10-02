@@ -24,6 +24,8 @@
 #include "VisionaryAutoIPScan.h"
 #include "UdpSocket.h"
 
+namespace visionary 
+{
 
 namespace pt = boost::property_tree;
 
@@ -174,4 +176,5 @@ VisionaryAutoIPScan::DeviceInfo VisionaryAutoIPScan::parseAutoIPXml(std::strings
   return dI;
 }
 
+}
 #endif

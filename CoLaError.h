@@ -9,6 +9,9 @@
 
 #pragma once
 
+namespace visionary 
+{
+
 namespace CoLaError
 {
   /// Possible CoLa errors
@@ -129,4 +132,6 @@ namespace CoLaError
     /// Unknown error, internally thrown if SOPAS Scan received an unknown command.
     UNKNOWN = 32767
   };
+}
+
 }

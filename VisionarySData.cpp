@@ -18,6 +18,8 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
+namespace visionary 
+{
 
 VisionarySData::VisionarySData() : VisionaryData()
 {
@@ -177,4 +179,6 @@ const std::vector<uint32_t>& VisionarySData::getRGBAMap() const
 const std::vector<uint16_t>& VisionarySData::getConfidenceMap() const
 {
   return m_confidenceMap;
+}
+
 }

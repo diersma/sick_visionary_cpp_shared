@@ -7,13 +7,15 @@
 // SICK AG, Waldkirch
 // email: TechSupport0905@sick.de
 
-#ifndef ITRANSPORT_H_INCLUDED
-#define ITRANSPORT_H_INCLUDED
+#pragma once
 
 #include <cstddef>
 #include <cstdint>
 #include <vector>
 #include <string>
+
+namespace visionary 
+{
 
 class ITransport
 {
@@ -51,4 +53,4 @@ public:
 
 };
 
-#endif /* ITRANSPORT_H_INCLUDED */
+}

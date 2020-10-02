@@ -16,6 +16,8 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
+namespace visionary 
+{
 
 static const boost::property_tree::ptree& empty_ptree() {
   static boost::property_tree::ptree t;
@@ -196,4 +198,6 @@ const std::vector<uint16_t>& VisionaryTMiniData::getDistanceMap() const
 const std::vector<uint16_t>& VisionaryTMiniData::getIntensityMap() const
 {
   return m_intensityMap;
+}
+
 }

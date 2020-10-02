@@ -13,6 +13,9 @@
 #include <fstream>
 #include "VisionaryEndian.h"
 
+namespace visionary 
+{
+
 bool PointCloudPlyWriter::WriteFormatPLY(const char* filename, const std::vector<PointXYZ>& points, bool useBinary)
 {
   return WriteFormatPLY(filename, points, std::vector<uint32_t>(), std::vector<uint16_t>(), useBinary);
@@ -126,4 +129,6 @@ PointCloudPlyWriter::PointCloudPlyWriter()
 
 PointCloudPlyWriter::~PointCloudPlyWriter()
 {
+}
+
 }

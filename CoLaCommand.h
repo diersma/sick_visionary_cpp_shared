@@ -9,11 +9,14 @@
 
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include <vector>
 #include "CoLaError.h"
 #include "CoLaCommandType.h"
+
+namespace visionary 
+{
 
 class CoLaCommand
 {
@@ -51,3 +54,4 @@ public:
   static CoLaCommand networkErrorCommand();
 };
 
+}

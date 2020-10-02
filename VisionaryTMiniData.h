@@ -14,6 +14,9 @@
 
 #include "VisionaryData.h"
 
+namespace visionary 
+{
+
 class VisionaryTMiniData : public VisionaryData
 {
 public:
@@ -62,3 +65,4 @@ private:
   std::vector<uint16_t> m_intensityMap;
 };
 
+}

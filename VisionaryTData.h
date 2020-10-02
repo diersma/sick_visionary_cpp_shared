@@ -14,6 +14,9 @@
 
 #include "VisionaryData.h"
 
+namespace visionary 
+{
+
 typedef struct {
   float angleFirstScanPoint;
   float angularResolution;
@@ -86,3 +89,4 @@ private:
   std::vector<PointXYZC> m_cartesianData;
 };
 
+}

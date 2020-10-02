@@ -14,6 +14,9 @@
 #include "VisionaryData.h"
 #include "TcpSocket.h"
 
+namespace visionary 
+{
+
 class VisionaryDataStream
 {
 public:
@@ -52,3 +55,5 @@ private:
   // Returns true when parsing was successful.
   bool parseSegmentBinaryData(const std::vector<uint8_t>::iterator itBuf);
 };
+
+}

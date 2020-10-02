@@ -9,8 +9,13 @@
 
 #pragma once
 
+namespace visionary 
+{
+
 struct PointXYZ {
   float x;
   float y;
   float z;
 };
+
+}

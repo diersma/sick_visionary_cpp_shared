@@ -15,6 +15,9 @@
 #include <cassert>
 #include <limits>
 
+namespace visionary 
+{
+
 const float bad_point = std::numeric_limits<float>::quiet_NaN();
 
 VisionaryData::VisionaryData()
@@ -208,3 +211,4 @@ const CameraParameters& VisionaryData::getCameraParameters() const
   return m_cameraParams;
 }
 
+}

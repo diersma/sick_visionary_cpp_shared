@@ -18,6 +18,8 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
+namespace visionary 
+{
 
 static const boost::property_tree::ptree& empty_ptree() {
   static boost::property_tree::ptree t;
@@ -376,4 +378,6 @@ uint32_t VisionaryTData::getCartesianSize() const
 const std::vector<PointXYZC>& VisionaryTData::getCartesianData()const
 {
   return m_cartesianData;
+}
+
 }

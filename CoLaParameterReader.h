@@ -9,9 +9,12 @@
 
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include "CoLaCommand.h"
+
+namespace visionary 
+{
 
 /// <summary>
 /// Class for reading data from a <see cref="CoLaCommand" />.
@@ -82,3 +85,4 @@ public:
   std::string readFlexString();
 };
 
+}

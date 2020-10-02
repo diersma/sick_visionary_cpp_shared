@@ -9,10 +9,13 @@
 
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <cstring>
 
 #define ENDIAN_LITTLE
+
+namespace visionary 
+{
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -184,3 +187,5 @@ inline T readUnalignLittleEndian(const void *ptr)
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+}

@@ -10,6 +10,9 @@
 #pragma once
 #include "VisionaryControl.h"
 
+namespace visionary 
+{
+
 class AuthenticationLegacy:
   public IAuthentication
 {
@@ -24,3 +27,4 @@ private:
   VisionaryControl& m_VisionaryControl;
 };
 
+}

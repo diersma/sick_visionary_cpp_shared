@@ -33,6 +33,9 @@ typedef int SOCKET;
 #define SOCKET_ERROR    (-1)
 #endif
 
+namespace visionary 
+{
+
 class UdpSocket :
   public ITransport
 {
@@ -52,3 +55,4 @@ private:
   struct sockaddr_in m_udpAddr;
 };
 
+}

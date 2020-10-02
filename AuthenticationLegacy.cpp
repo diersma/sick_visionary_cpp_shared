@@ -11,6 +11,9 @@
 #include "CoLaParameterWriter.h"
 #include "CoLaParameterReader.h"
 
+namespace visionary 
+{
+
 AuthenticationLegacy::AuthenticationLegacy(VisionaryControl& vctrl):
   m_VisionaryControl(vctrl)
 {
@@ -43,4 +46,6 @@ bool AuthenticationLegacy::logout()
     return CoLaParameterReader(runResponse).readBool();
   }
   return false;
+}
+
 }

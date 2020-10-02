@@ -18,6 +18,8 @@
 #include "TcpSocket.h"
 #include "ControlSession.h"
 
+namespace visionary 
+{
 
 class VisionaryControl
 {
@@ -112,3 +114,5 @@ private:
   std::unique_ptr<IAuthentication>  m_pAuthentication;
   std::unique_ptr<ControlSession>   m_pControlSession;
 };
+
+}

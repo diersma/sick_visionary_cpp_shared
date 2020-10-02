@@ -14,6 +14,9 @@
 #include "VisionaryDataStream.h"
 #include "VisionaryEndian.h"
 
+namespace visionary 
+{
+
 VisionaryDataStream::VisionaryDataStream(std::shared_ptr<VisionaryData> dataHandler) :
   m_dataHandler(dataHandler)
 {
@@ -145,4 +148,6 @@ bool VisionaryDataStream::parseSegmentBinaryData(std::vector<uint8_t>::iterator 
     result = m_dataHandler->parseBinaryData((itBuf + offset[1]), binarySegmentSize);
   }
   return result;
+}
+
 }

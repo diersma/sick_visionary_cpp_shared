@@ -6,10 +6,12 @@
 /// \email TechSupport0905@sick.de
 ///
 /// \version 0.0.1
-//---------------------------------------------------------------------------------------
+
 #include "ControlSession.h"
 #include "CoLaParameterWriter.h"
-//---------------------------------------------------------------------------------------
+
+namespace visionary 
+{
 
 ControlSession::ControlSession(IProtocolHandler& ProtocolHandler)
   : m_ProtocolHandler(ProtocolHandler)
@@ -47,4 +49,4 @@ CoLaCommand ControlSession::send(const CoLaCommand& cmd)
   return m_ProtocolHandler.send(cmd);
 }
 
-//---------------------------------------------------------------------------------------
+}
