@@ -7,11 +7,8 @@
 /// \email TechSupport0905@sick.de
 ///
 /// \version 0.0.1
-//---------------------------------------------------------------------------------------
-#ifndef IAUTHENTICATION_H_INCLUDED
-#define IAUTHENTICATION_H_INCLUDED
-//---------------------------------------------------------------------------------------
 
+#pragma once
 #include <string>
 
 class IAuthentication
@@ -32,7 +29,3 @@ public:
   virtual bool login(UserLevel userLevel, const std::string& password) = 0;
   virtual bool logout() = 0;
 };
-
-//---------------------------------------------------------------------------------------
-
-#endif /* IAUTHENTICATION_H_INCLUDED */

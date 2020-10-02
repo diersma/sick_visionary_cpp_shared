@@ -6,15 +6,11 @@
 /// \email TechSupport0905@sick.de
 ///
 /// \version 0.0.1
-//---------------------------------------------------------------------------------------
-#ifndef CONTROLSESSION_H_INCLUDED
-#define CONTROLSESSION_H_INCLUDED
-//---------------------------------------------------------------------------------------
+
+#pragma once
 #include <string>
 #include "CoLaCommand.h"
 #include "IProtocolHandler.h"
-
-//---------------------------------------------------------------------------------------
 
 class ControlSession
 {
@@ -34,8 +30,3 @@ public:
 private:
   IProtocolHandler& m_ProtocolHandler;
 };
-
-//---------------------------------------------------------------------------------------
-
-#endif /* CONTROLSESSION_H_INCLUDED */
-
