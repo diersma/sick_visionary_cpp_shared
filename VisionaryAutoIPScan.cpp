@@ -11,7 +11,7 @@
 
 #if (_MSC_VER >= 1700)
 
-#include <strstream>
+#include <sstream>
 #include <memory>
 
 #include <string>

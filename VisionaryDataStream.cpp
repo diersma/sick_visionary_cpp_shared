@@ -14,7 +14,7 @@
 #include "VisionaryDataStream.h"
 #include "VisionaryEndian.h"
 
-VisionaryDataStream::VisionaryDataStream(boost::shared_ptr<VisionaryData> dataHandler) :
+VisionaryDataStream::VisionaryDataStream(std::shared_ptr<VisionaryData> dataHandler) :
   m_dataHandler(dataHandler)
 {
 }
