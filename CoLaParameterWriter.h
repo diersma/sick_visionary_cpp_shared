@@ -10,7 +10,7 @@
 #pragma once
 
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 #include "CoLaCommandType.h"
 #include "CoLaCommand.h"
