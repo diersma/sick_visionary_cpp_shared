@@ -12,6 +12,9 @@
 #include "MD5.h"
 #include "VisionaryEndian.h"
 
+namespace visionary 
+{
+
 CoLaParameterWriter::CoLaParameterWriter(CoLaCommandType::Enum type, const char * name)
   : m_type(type)
   , m_name(name)
@@ -178,4 +181,6 @@ void CoLaParameterWriter::writeHeader(CoLaCommandType::Enum type, const char* na
 
   // Write command name
   *this << name << " ";
+}
+
 }

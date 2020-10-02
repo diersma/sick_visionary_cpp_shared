@@ -15,6 +15,9 @@
 
 #include "PointXYZ.h"
 
+namespace visionary 
+{
+
 // Parameters to be extracted from the XML metadata part
 struct CameraParameters {
   /// The height of the frame in pixels
@@ -145,3 +148,4 @@ private:
   static const uint_fast16_t FACTOR_SECOND_TO_MILLISEC = 1000;
 };
 
+}

@@ -12,6 +12,9 @@
 #include <string>
 #include "VisionaryEndian.h"
 
+namespace visionary 
+{
+
 CoLaCommand::CoLaCommand(CoLaCommandType::Enum commandType, CoLaError::Enum error, const char* name)
   : m_buffer()
   , m_type(commandType)
@@ -99,4 +102,6 @@ CoLaError::Enum CoLaCommand::getError()
 CoLaCommand CoLaCommand::networkErrorCommand()
 {
   return CoLaCommand(CoLaCommandType::NETWORK_ERROR, CoLaError::NETWORK_ERROR, "");
+}
+
 }

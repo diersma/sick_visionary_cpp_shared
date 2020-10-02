@@ -12,6 +12,9 @@
 #include "ITransport.h"
 #include "CoLaCommand.h"
 
+namespace visionary 
+{
+
 class CoLaBProtocolHandler:
   public IProtocolHandler
 {
@@ -29,3 +32,5 @@ private:
   ITransport& m_rTransport;
   uint8_t calculateChecksum(const std::vector<uint8_t>& buffer);
 };
+
+}

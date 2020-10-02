@@ -10,6 +10,8 @@
 #include "CoLa2ProtocolHandler.h"
 #include "VisionaryEndian.h"
 
+namespace visionary 
+{
 
 CoLa2ProtocolHandler::CoLa2ProtocolHandler(ITransport& rTransport)
   : m_rTransport(rTransport)
@@ -168,4 +170,6 @@ uint8_t CoLa2ProtocolHandler::calculateChecksum(const std::vector<uint8_t>& buff
     checksum ^= buffer[i];
   }
   return checksum;
+}
+
 }

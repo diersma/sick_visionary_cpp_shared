@@ -11,6 +11,9 @@
 
 #include "UdpSocket.h"
 
+namespace visionary 
+{
+
 UdpSocket::UdpSocket()
 {
   memset(&m_udpAddr, 0, sizeof(m_udpAddr));
@@ -113,4 +116,6 @@ int UdpSocket::read(std::vector<std::uint8_t>& buffer, std::size_t nBytesToRecei
   }
   pBuffer = NULL;
   return bytesReceived;
+}
+
 }

@@ -15,6 +15,9 @@
 #include "CoLaError.h"
 #include "CoLaCommandType.h"
 
+namespace visionary 
+{
+
 class CoLaCommand
 {
 private:
@@ -51,3 +54,4 @@ public:
   static CoLaCommand networkErrorCommand();
 };
 
+}

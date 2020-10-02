@@ -12,6 +12,9 @@
 #include "CoLaCommand.h"
 #include "IProtocolHandler.h"
 
+namespace visionary 
+{
+
 class ControlSession
 {
 public:
@@ -30,3 +33,5 @@ public:
 private:
   IProtocolHandler& m_ProtocolHandler;
 };
+
+}

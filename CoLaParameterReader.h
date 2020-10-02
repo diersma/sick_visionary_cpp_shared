@@ -13,6 +13,9 @@
 #include <string>
 #include "CoLaCommand.h"
 
+namespace visionary 
+{
+
 /// <summary>
 /// Class for reading data from a <see cref="CoLaCommand" />.
 /// </summary>
@@ -82,3 +85,4 @@ public:
   std::string readFlexString();
 };
 
+}

@@ -11,6 +11,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
+namespace visionary 
+{
 
 static const uint16_t DEFAULT_PORT = 30718;
 static const std::string DEFAULT_BROADCAST_ADDR = "255.255.255.255";
@@ -39,3 +43,5 @@ private:
   DeviceInfo parseAutoIPXml(std::stringstream& rStringStream);
   static const short DEFAULT_PORT = 30718;
 };
+
+}

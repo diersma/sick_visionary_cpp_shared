@@ -10,6 +10,9 @@
 #include "CoLaParameterReader.h"
 #include "VisionaryEndian.h"
 
+namespace visionary 
+{
+
 CoLaParameterReader::CoLaParameterReader(CoLaCommand command)
   : m_command(command)
 {
@@ -96,4 +99,6 @@ std::string CoLaParameterReader::readFlexString()
   }
   m_currentPosition += str.length();
   return str;
+}
+
 }

@@ -11,6 +11,9 @@
 #pragma once
 #include <string>
 
+namespace visionary 
+{
+
 class IAuthentication
 {
 public:
@@ -29,3 +32,5 @@ public:
   virtual bool login(UserLevel userLevel, const std::string& password) = 0;
   virtual bool logout() = 0;
 };
+
+}

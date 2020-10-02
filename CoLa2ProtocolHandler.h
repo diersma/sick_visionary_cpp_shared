@@ -12,6 +12,9 @@
 #include "ITransport.h"
 #include "CoLaCommand.h"
 
+namespace visionary 
+{
+
 class CoLa2ProtocolHandler:
   public IProtocolHandler
 {
@@ -34,3 +37,5 @@ private:
   std::vector<std::uint8_t> createCoLa2Header();
 
 };
+
+}

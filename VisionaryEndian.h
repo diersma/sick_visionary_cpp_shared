@@ -14,6 +14,9 @@
 
 #define ENDIAN_LITTLE
 
+namespace visionary 
+{
+
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 template<class T>
@@ -184,3 +187,5 @@ inline T readUnalignLittleEndian(const void *ptr)
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+}

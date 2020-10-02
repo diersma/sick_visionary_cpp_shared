@@ -9,6 +9,9 @@
 
 #include "TcpSocket.h"
 
+namespace visionary 
+{
+
 int TcpSocket::connect(const std::string& hostname, uint16_t port)
 {
   int iResult = 0;
@@ -107,4 +110,6 @@ int TcpSocket::read(std::vector<std::uint8_t>& buffer, std::size_t nBytesToRecei
   }
   pBuffer = NULL;
   return bytesReceived;
+}
+
 }

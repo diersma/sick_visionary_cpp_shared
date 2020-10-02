@@ -18,6 +18,9 @@
 #include "CoLaParameterWriter.h"
 #include "CoLaParameterReader.h"
 
+namespace visionary 
+{
+
 VisionaryControl::VisionaryControl()
 {
 }
@@ -157,4 +160,6 @@ bool VisionaryControl::getDataStreamConfig()
 CoLaCommand VisionaryControl::sendCommand(CoLaCommand & command)
 {
   return m_pControlSession->send(command);
+}
+
 }

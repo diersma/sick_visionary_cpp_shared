@@ -12,6 +12,9 @@
 #include <cstdint>
 #include "CoLaCommand.h"
 
+namespace visionary 
+{
+
 class IProtocolHandler
 {
 public:
@@ -20,3 +23,4 @@ public:
   virtual CoLaCommand send(CoLaCommand cmd) = 0;
 };
 
+}

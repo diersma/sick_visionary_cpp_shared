@@ -15,6 +15,9 @@
 #include "CoLaCommandType.h"
 #include "CoLaCommand.h"
 
+namespace visionary 
+{
+
 /// <summary>
 /// Builder for constructing <see cref="CoLaCommand" />s.
 /// </summary>
@@ -187,3 +190,5 @@ private:
   /// <returns>The calculated checksum.</returns>
   //static uint8_t calculateChecksum(const std::vector<uint8_t>& buffer);
 };
+
+}

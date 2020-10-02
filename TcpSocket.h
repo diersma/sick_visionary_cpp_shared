@@ -28,6 +28,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+namespace visionary 
+{
+
 typedef int SOCKET;
 #define INVALID_SOCKET  ((SOCKET)(~0))
 #define SOCKET_ERROR    (-1)
@@ -48,3 +51,4 @@ private:
   SOCKET m_socket;
 };
 
+}
