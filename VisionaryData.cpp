@@ -195,12 +195,12 @@ uint64_t VisionaryData::getTimestamp() const
 
 uint64_t VisionaryData::getTimestampMS() const
 {
-  uint64_t timestamp = (m_blobTimestamp & BITMASK_YEAR) * FACTOR_YEAR_TO_MILLISEC;
-  timestamp += (m_blobTimestamp & BITMASK_MONTH) * FACTOR_MONTH_TO_MILLISEC;
-  timestamp += (m_blobTimestamp & BITMASK_DAY) * FACTOR_DAY_TO_MILLISEC;
-  timestamp += (m_blobTimestamp & BITMASK_HOUR) * FACTOR_HOUR_TO_MILLISEC;
-  timestamp += (m_blobTimestamp & BITMASK_MINUTE) * FACTOR_MINUTE_TO_MILLISEC;
-  timestamp += (m_blobTimestamp & BITMASK_SECOND) * FACTOR_SECOND_TO_MILLISEC;
+  uint64_t timestamp = ((m_blobTimestamp & BITMASK_YEAR) >> 47) * FACTOR_YEAR_TO_MILLISEC;
+  timestamp += ((m_blobTimestamp & BITMASK_MONTH) >> 43) * FACTOR_MONTH_TO_MILLISEC;
+  timestamp += ((m_blobTimestamp & BITMASK_DAY) >> 38) * FACTOR_DAY_TO_MILLISEC;
+  timestamp += ((m_blobTimestamp & BITMASK_HOUR) >> 22) * FACTOR_HOUR_TO_MILLISEC;
+  timestamp += ((m_blobTimestamp & BITMASK_MINUTE) >> 16) * FACTOR_MINUTE_TO_MILLISEC;
+  timestamp += ((m_blobTimestamp & BITMASK_SECOND) >> 10) * FACTOR_SECOND_TO_MILLISEC;
   timestamp += (m_blobTimestamp & BITMASK_MILLISECOND);
 
   return timestamp;
