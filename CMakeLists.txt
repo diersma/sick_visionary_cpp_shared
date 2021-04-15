@@ -3,13 +3,10 @@
 # 
 # Updated: January 2020
 # 
-# Author: Andreas Richert
-# Author: Marco Dierschke
-#
 # SICK AG, Waldkirch
 # email: TechSupport0905@sick.de
 
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 
 project(sick_visionary_cpp_shared
         VERSION 0.1.0
@@ -21,17 +18,19 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 ### BUILD ###
-aux_source_directory(. SRC_LIST)
+aux_source_directory(src SRC_LIST)
 
 add_library(${PROJECT_NAME} STATIC ${SRC_LIST})
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-      include
-      .)
+if(ROS_BUILD)
+  find_package(Boost REQUIRED COMPONENTS system)
+  target_include_directories(${PROJECT_NAME} PUBLIC src)
+else()
+  target_include_directories(${PROJECT_NAME} PUBLIC include src)
+endif()
 
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} wsock32 ws2_32)
