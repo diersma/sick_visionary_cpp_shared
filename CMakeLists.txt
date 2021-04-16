@@ -22,15 +22,12 @@ aux_source_directory(src SRC_LIST)
 
 add_library(${PROJECT_NAME} STATIC ${SRC_LIST})
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  CXX_STANDARD 11
+  CXX_STANDARD_REQUIRED YES
+  CXX_EXTENSIONS OFF)
 
-if(ROS_BUILD)
-  find_package(Boost REQUIRED COMPONENTS system)
-  target_include_directories(${PROJECT_NAME} PUBLIC src)
-else()
-  target_include_directories(${PROJECT_NAME} PUBLIC include src)
-endif()
+target_include_directories(${PROJECT_NAME} PRIVATE include PUBLIC src)
 
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} wsock32 ws2_32)
